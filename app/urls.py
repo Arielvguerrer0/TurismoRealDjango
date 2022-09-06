@@ -3,7 +3,11 @@ from .views import * #importa todas las vistas
 from rest_framework import routers #para importar los serializers creados y ser vistos
 
 router = routers.DefaultRouter()#permite crear urls para las api
+<<<<<<< HEAD
 router.register('ciudad', CiudadViewset)
+=======
+#router.register('checkin', CheckInViewset)
+>>>>>>> conexionapi
 
 urlpatterns = [
     path('', home, name="home"),
