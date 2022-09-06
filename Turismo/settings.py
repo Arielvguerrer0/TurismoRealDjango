@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',#se carga el modulo app
+    'rest_framework',#para consumir y crear api
 ]
 
 MIDDLEWARE = [
