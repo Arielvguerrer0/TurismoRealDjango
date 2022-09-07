@@ -8,5 +8,6 @@ router.register('ciudad', CiudadViewset)
 urlpatterns = [
     path('', home, name="home"),
     path('api/', include(router.urls)),
+    path('registro/', registro, name="registro"),
     
 ]
