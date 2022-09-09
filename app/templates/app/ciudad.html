@@ -1,0 +1,179 @@
+{% extends 'app/base.html' %}
+
+{% block contenido %}
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<br><br>
+<div class="card">
+    <div class="card-body">
+        <h1>Agregar Ciudad</h1>
+        <hr>
+        <br>
+        <div class="row">
+            <div class="form-inline">
+                <div class="form-group" style="margin-right: 20px;">
+                    <label for="txtId">&nbsp;&nbsp;&nbsp;&nbsp;ID Ciudad: &nbsp;</label>
+                    <input type="text" class="form-control" id="txtId" style="width: 50px;">
+                </div>
+                <div class="form-group" style="margin-right: 20px;">
+                    <label for="txtmarca">Nombre Ciudad: &nbsp;</label>
+                    <input type="text" class="form-control" id="txtmarca">
+                </div>
+                <div class="form-group" style="margin-right: 20px;">
+                    <label for="txtmodelo">ID Region: &nbsp;</label>
+                    <input type="text" class="form-control" id="txtmodelo">
+                </div>
+                <br>
+                <button id="Submit" type="submit" class="btn btn-primary">Agregar Ciudad</button>
+            </div>
+        </div>
+        <br><br>
+        <br><br>
+
+        <h2>Lista de Ciudad</h2>
+        <hr>
+        <table class="table table-hover">
+            <tr>
+                <th>ID Ciudad</th>
+                <th>Nombre Ciudad</th>
+                <th>ID Region</th>
+               
+                <th>Acción</th>
+            </tr>
+            <tbody id="divBody"></tbody>
+
+
+        </table>
+
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        Ciudad();
+        });
+        $('#Submit').click(function () {
+            let id_ciudad = $('#txtid_ciudad').val();
+            let nom_ciudad = $('#txtnom_ciudad').val();
+            let region_id_region = $('#txtregion_id_region').val();
+            
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    "id_ciudad": id_ciudad,
+                    "nom_ciudad": nom_ciudad,
+                    "region_id_region": region_id_region
+                   
+                },
+
+                url: "http://localhost:8000/api/ciudad/",
+                error: function (xhr, status, error) {
+
+                    var err_msg = ''
+                    for (var prop in xhr.responseJSON) {
+                        err_msg += prop + ': ' + xhr.responseJSON[prop] + '\n';
+                    }
+
+                    alert(err_msg);
+                },
+                success: function (result) {
+                 
+                    Ciudad();
+                    alert('Data Saved Successfully.');
+                    $('#txtid_ciudad').val("");
+                    $('#txtnom_ciudad').val("");
+                    $('#txtregion_id_region').val("");
+                   
+                }
+            });
+        });
+        function Ciudad() {
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: "http://localhost:8000/api/ciudad/", success: function (result) {
+                   
+                    var totalCount = result.length;
+                    var structureDiv = "";
+                    for (let i = 0; i < totalCount; i++) {
+                        structureDiv += "<tr>" +
+                            "     <td>" + result[i].id_ciudad + "</td>" +
+                            "      <td>" + result[i].nom_ciudad + "</td>" +
+                            "             <td>" + result[i].region_id_region + "</td>" 
+                            "              <td><button class='btn btn-link' onclick='return confirm(\"Estas seguro que quieres ELIMINAR?\",DeleteRow(" + result[i].id + "))'>Delete</button></td>" +
+                            "           </tr>";
+                    }
+
+                    $("#divBody").html(structureDiv);
+              
+                }
+            });
+
+        }
+
+        function DeleteRow(id) {
+            
+            $.ajax({
+                type: 'DELETE',
+                dataType: 'json',
+
+                url: "http://localhost:8000/api/ciudad/"+id+"/",
+                error: function (xhr, status, error) {
+
+                    var err_msg = ''
+                    for (var prop in xhr.responseJSON) {
+                        err_msg += prop + ': ' + xhr.responseJSON[prop] + '\n';
+                    }
+
+                    alert(err_msg);
+                },
+                success: function (result) {
+              
+                    Ciudad();
+                }
+            });
+        }
+</script>
+
+
+
+<br><br><br><br><br>
+<br><br>
+
+<div class="card">
+    <div class="card-body">
+        <h2>Listado de Ciudad</h2>
+        <hr>
+        <table class="table table-striped table-hover table-responsive-sm" id="ciudad">
+            <thead>
+                <tr>
+                  <th scope="col">ID Ciudad</th>
+                  <th scope="col">Nombre Ciudad</th>
+                  <th scope="col">ID Region</th>
+                </tr>
+            </thead>
+            <script >
+                fetch('http://localhost:8000/api/ciudad/').then(function(response) {
+                return response.json();
+                }).then(function(data) {
+                console.log(data);
+                data.forEach(element =>{
+                    let tabla = document.getElementById('ciudad');
+                    tabla.innerHTML += `<tr><td>${element.id_ciudad}</td><td>${element.nom_ciudad}</td><td>${element.region_id_region}</td></tr>`
+                })
+                });
+            </script>              
+        </table>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
+crossorigin="anonymous"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+{% endblock %}
