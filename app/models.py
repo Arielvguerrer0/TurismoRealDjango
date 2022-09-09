@@ -2,10 +2,8 @@ from django.db import models
 
 
 class CheckIn(models.Model):
-    id_check_in = models.BigIntegerField(primary_key=True)
+    id_check_in = models.OneToOneField('Reserva', models.DO_NOTHING, db_column='id_check_in', primary_key=True)
     fecha_llegada = models.DateField()
-    check_out_id_check_out = models.OneToOneField('CheckOut', models.DO_NOTHING, db_column='check_out_id_check_out')
-    reserva_id_reserva = models.OneToOneField('Reserva', models.DO_NOTHING, db_column='reserva_id_reserva')
 
     class Meta:
         managed = False
@@ -13,9 +11,8 @@ class CheckIn(models.Model):
 
 
 class CheckOut(models.Model):
-    id_check_out = models.BigIntegerField(primary_key=True)
+    id_check_out = models.OneToOneField(CheckIn, models.DO_NOTHING, db_column='id_check_out', primary_key=True)
     fecha_salida = models.DateField()
-    check_in_id_check_in = models.OneToOneField(CheckIn, models.DO_NOTHING, db_column='check_in_id_check_in')
 
     class Meta:
         managed = False
@@ -23,9 +20,8 @@ class CheckOut(models.Model):
 
 
 class Ciudad(models.Model):
-    id_ciudad = models.BigIntegerField(primary_key=True)
+    id_ciudad = models.OneToOneField('Region', models.DO_NOTHING, db_column='id_ciudad', primary_key=True)
     nom_ciudad = models.CharField(max_length=50)
-    region_id_region = models.ForeignKey('Region', models.DO_NOTHING, db_column='region_id_region')
 
     class Meta:
         managed = False
@@ -33,9 +29,8 @@ class Ciudad(models.Model):
 
 
 class Comuna(models.Model):
-    id_comuna = models.BigIntegerField(primary_key=True)
+    id_comuna = models.OneToOneField(Ciudad, models.DO_NOTHING, db_column='id_comuna', primary_key=True)
     nom_comuna = models.CharField(max_length=50)
-    ciudad_id_ciudad = models.ForeignKey(Ciudad, models.DO_NOTHING, db_column='ciudad_id_ciudad')
 
     class Meta:
         managed = False
@@ -43,17 +38,15 @@ class Comuna(models.Model):
 
 
 class Departamento(models.Model):
-    id_departamento = models.BigIntegerField(primary_key=True)
+    id_departamento = models.OneToOneField('Tarifa', models.DO_NOTHING, db_column='id_departamento', primary_key=True)
     direccion = models.CharField(max_length=50)
-    cant_dormitorio = models.BigIntegerField()
-    cant_cama = models.BigIntegerField()
-    cant_banno = models.BigIntegerField()
-    cant_tv = models.BigIntegerField()
+    cant_dormitorio = models.FloatField()
+    cant_cama = models.FloatField()
+    cant_banno = models.FloatField()
+    cant_tv = models.FloatField()
     aire_acondicionado = models.FloatField()
     internet = models.FloatField()
     tv_cable = models.FloatField()
-    estado_departamento_id_estado_departamento = models.ForeignKey('EstadoDepartamento', models.DO_NOTHING, db_column='estado_departamento_id_estado_departamento')
-    tarifa_id_tarifa = models.OneToOneField('Tarifa', models.DO_NOTHING, db_column='tarifa_id_tarifa')
 
     class Meta:
         managed = False
@@ -61,7 +54,7 @@ class Departamento(models.Model):
 
 
 class EstadoDepartamento(models.Model):
-    id_estado_departamento = models.BigIntegerField(primary_key=True)
+    id_estado_departamento = models.FloatField(primary_key=True)
     estado_departamento = models.CharField(max_length=50)
 
     class Meta:
@@ -70,10 +63,9 @@ class EstadoDepartamento(models.Model):
 
 
 class Multa(models.Model):
-    id_multa = models.BigIntegerField(primary_key=True)
+    id_multa = models.OneToOneField(CheckOut, models.DO_NOTHING, db_column='id_multa', primary_key=True)
     tipo_multa = models.CharField(max_length=50)
-    valor_multa = models.BigIntegerField()
-    check_out_id_check_out = models.ForeignKey(CheckOut, models.DO_NOTHING, db_column='check_out_id_check_out')
+    valor_multa = models.FloatField()
 
     class Meta:
         managed = False
@@ -81,9 +73,8 @@ class Multa(models.Model):
 
 
 class Pais(models.Model):
-    id_pais = models.BigIntegerField(primary_key=True)
+    id_pais = models.FloatField(primary_key=True)
     nom_pais = models.CharField(max_length=50)
-    persona_id_persona = models.ForeignKey('Persona', models.DO_NOTHING, db_column='persona_id_persona')
 
     class Meta:
         managed = False
@@ -91,15 +82,15 @@ class Pais(models.Model):
 
 
 class Persona(models.Model):
-    id_persona = models.BigIntegerField(primary_key=True)
+    id_persona = models.FloatField(primary_key=True)
     rut = models.CharField(max_length=9)
     nombre = models.CharField(max_length=50)
     apellido = models.CharField(max_length=50)
     fecha_nacimiento = models.DateField()
-    edad = models.BigIntegerField()
+    edad = models.FloatField()
     sexo = models.CharField(max_length=10)
     direccion = models.CharField(max_length=50)
-    telefono = models.BigIntegerField(blank=True, null=True)
+    telefono = models.FloatField()
     correo = models.CharField(max_length=50)
 
     class Meta:
@@ -108,9 +99,8 @@ class Persona(models.Model):
 
 
 class Region(models.Model):
-    id_region = models.BigIntegerField(primary_key=True)
+    id_region = models.OneToOneField(Pais, models.DO_NOTHING, db_column='id_region', primary_key=True)
     nom_region = models.CharField(max_length=50)
-    pais_id_pais = models.ForeignKey(Pais, models.DO_NOTHING, db_column='pais_id_pais')
 
     class Meta:
         managed = False
@@ -118,16 +108,12 @@ class Region(models.Model):
 
 
 class Reserva(models.Model):
-    id_reserva = models.BigIntegerField(primary_key=True)
-    nun_acompannante = models.BigIntegerField()
+    id_reserva = models.OneToOneField('Usuario', models.DO_NOTHING, db_column='id_reserva', primary_key=True)
+    num_acompannante = models.FloatField()
     fecha_inicio = models.DateField()
-    fecha_fin = models.DateField()
-    cant_dia = models.BigIntegerField()
-    valor_reserva = models.BigIntegerField()
-    vigente = models.FloatField(blank=True, null=True)
-    check_in_id_check_in = models.OneToOneField(CheckIn, models.DO_NOTHING, db_column='check_in_id_check_in')
-    departamento_id_departamento = models.ForeignKey(Departamento, models.DO_NOTHING, db_column='departamento_id_departamento')
-    usuario_id_usuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='usuario_id_usuario')
+    fecha_salida = models.DateField()
+    cant_dia = models.FloatField()
+    valor_reserva = models.FloatField()
 
     class Meta:
         managed = False
@@ -135,11 +121,9 @@ class Reserva(models.Model):
 
 
 class Servicio(models.Model):
-    id_servicio = models.BigIntegerField(primary_key=True)
+    id_servicio = models.OneToOneField(Reserva, models.DO_NOTHING, db_column='id_servicio', primary_key=True)
     nom_servicio = models.CharField(max_length=50)
     tipo_servicio = models.CharField(max_length=50)
-    reserva_id_reserva = models.ForeignKey(Reserva, models.DO_NOTHING, db_column='reserva_id_reserva')
-    tarifa_id_tarifa = models.OneToOneField('Tarifa', models.DO_NOTHING, db_column='tarifa_id_tarifa')
 
     class Meta:
         managed = False
@@ -147,10 +131,8 @@ class Servicio(models.Model):
 
 
 class Tarifa(models.Model):
-    id_tarifa = models.BigIntegerField(primary_key=True)
-    valor = models.BigIntegerField()
-    departamento_id_departamento = models.OneToOneField(Departamento, models.DO_NOTHING, db_column='departamento_id_departamento')
-    servicio_id_servicio = models.OneToOneField(Servicio, models.DO_NOTHING, db_column='servicio_id_servicio')
+    id_tarifa = models.OneToOneField(Servicio, models.DO_NOTHING, db_column='id_tarifa', primary_key=True)
+    valor = models.FloatField()
 
     class Meta:
         managed = False
@@ -158,7 +140,7 @@ class Tarifa(models.Model):
 
 
 class TipoUsuario(models.Model):
-    id_tipo_usuario = models.BigIntegerField(primary_key=True)
+    id_tipo_usuario = models.FloatField(primary_key=True)
     tipo_usuario = models.CharField(max_length=50)
 
     class Meta:
@@ -167,12 +149,10 @@ class TipoUsuario(models.Model):
 
 
 class Usuario(models.Model):
-    id_usuario = models.BigIntegerField(primary_key=True)
+    id_usuario = models.OneToOneField(Persona, models.DO_NOTHING, db_column='id_usuario', primary_key=True)
     correo = models.CharField(max_length=50)
     contrasena = models.CharField(max_length=20)
     habilitado = models.FloatField()
-    persona_id_persona = models.ForeignKey(Persona, models.DO_NOTHING, db_column='persona_id_persona')
-    id_tipo_usuario = models.BigIntegerField()
 
     class Meta:
         managed = False

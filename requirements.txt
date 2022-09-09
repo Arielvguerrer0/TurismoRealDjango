@@ -3,3 +3,4 @@ django-rest-framework
 django-crispy-forms
 requests
 django-cors-headers
+cx_oracle

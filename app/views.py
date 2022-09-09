@@ -41,7 +41,7 @@ class PaisViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y
 
 class PersonaViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
     queryset = Persona.objects.all()
-    serializer_class = RegionSerializer
+    serializer_class = PersonaSerializer
 
 class RegionViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
     queryset = Region.objects.all()
