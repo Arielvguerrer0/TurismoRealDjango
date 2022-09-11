@@ -82,7 +82,7 @@ class Pais(models.Model):
 
 
 class Persona(models.Model):
-    id_persona = models.FloatField(primary_key=True)
+    id_persona = models.OneToOneField('Usuario', models.DO_NOTHING, db_column='id_persona', primary_key=True)
     rut = models.CharField(max_length=9)
     nombre = models.CharField(max_length=50)
     apellido = models.CharField(max_length=50)
@@ -149,7 +149,7 @@ class TipoUsuario(models.Model):
 
 
 class Usuario(models.Model):
-    id_usuario = models.OneToOneField(Persona, models.DO_NOTHING, db_column='id_usuario', primary_key=True)
+    id_usuario = models.FloatField(primary_key=True)
     correo = models.CharField(max_length=50)
     contrasena = models.CharField(max_length=20)
     habilitado = models.FloatField()

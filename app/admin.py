@@ -16,4 +16,3 @@ admin.site.register(Servicio)
 admin.site.register(Tarifa)
 admin.site.register(TipoUsuario)
 admin.site.register(Usuario)
-
