@@ -1,159 +1,166 @@
 from django.db import models
 
 
-class CheckIn(models.Model):
-    id_check_in = models.OneToOneField('Reserva', models.DO_NOTHING, db_column='id_check_in', primary_key=True)
-    fecha_llegada = models.DateField()
+class Checkin(models.Model):
+    id_check_in = models.OneToOneField('Persona', models.DO_NOTHING, db_column='id_check_in', primary_key=True)
+    descripcion = models.CharField(max_length=75)
 
     class Meta:
         managed = False
-        db_table = 'check_in'
+        db_table = 'checkin'
 
 
-class CheckOut(models.Model):
-    id_check_out = models.OneToOneField(CheckIn, models.DO_NOTHING, db_column='id_check_out', primary_key=True)
-    fecha_salida = models.DateField()
-
-    class Meta:
-        managed = False
-        db_table = 'check_out'
-
-
-class Ciudad(models.Model):
-    id_ciudad = models.OneToOneField('Region', models.DO_NOTHING, db_column='id_ciudad', primary_key=True)
-    nom_ciudad = models.CharField(max_length=50)
+class Checkout(models.Model):
+    id_check_out = models.OneToOneField('Registroarri', models.DO_NOTHING, db_column='id_check_out', primary_key=True)
+    descripcion = models.CharField(max_length=75)
 
     class Meta:
         managed = False
-        db_table = 'ciudad'
+        db_table = 'checkout'
 
 
-class Comuna(models.Model):
-    id_comuna = models.OneToOneField(Ciudad, models.DO_NOTHING, db_column='id_comuna', primary_key=True)
-    nom_comuna = models.CharField(max_length=50)
+class Cliente(models.Model):
+    rut = models.FloatField(primary_key=True)
+    nombre = models.CharField(max_length=75)
+    apellido = models.CharField(max_length=75)
+    telefono = models.FloatField()
+    correo = models.CharField(max_length=60)
+    contrasenia = models.CharField(max_length=75)
 
     class Meta:
         managed = False
-        db_table = 'comuna'
+        db_table = 'cliente'
 
 
 class Departamento(models.Model):
-    id_departamento = models.OneToOneField('Tarifa', models.DO_NOTHING, db_column='id_departamento', primary_key=True)
-    direccion = models.CharField(max_length=50)
-    cant_dormitorio = models.FloatField()
-    cant_cama = models.FloatField()
-    cant_banno = models.FloatField()
-    cant_tv = models.FloatField()
-    aire_acondicionado = models.FloatField()
-    internet = models.FloatField()
-    tv_cable = models.FloatField()
+    id_depto = models.FloatField(primary_key=True)
+    metros_cua = models.FloatField()
+    direccion = models.CharField(max_length=75)
+    valor = models.FloatField()
 
     class Meta:
         managed = False
         db_table = 'departamento'
 
 
-class EstadoDepartamento(models.Model):
-    id_estado_departamento = models.FloatField(primary_key=True)
-    estado_departamento = models.CharField(max_length=50)
+class Inventario(models.Model):
+    id_inventario = models.FloatField(primary_key=True)
+    habitacion = models.FloatField()
+    cama = models.CharField(max_length=75)
+    banio = models.FloatField()
 
     class Meta:
         managed = False
-        db_table = 'estado_departamento'
+        db_table = 'inventario'
 
 
-class Multa(models.Model):
-    id_multa = models.OneToOneField(CheckOut, models.DO_NOTHING, db_column='id_multa', primary_key=True)
-    tipo_multa = models.CharField(max_length=50)
-    valor_multa = models.FloatField()
-
-    class Meta:
-        managed = False
-        db_table = 'multa'
-
-
-class Pais(models.Model):
-    id_pais = models.FloatField(primary_key=True)
-    nom_pais = models.CharField(max_length=50)
+class Metodopago(models.Model):
+    id_met_pago = models.FloatField(primary_key=True)
+    descripcion = models.CharField(max_length=50)
 
     class Meta:
         managed = False
-        db_table = 'pais'
+        db_table = 'metodopago'
 
 
 class Persona(models.Model):
-    id_persona = models.OneToOneField('Usuario', models.DO_NOTHING, db_column='id_persona', primary_key=True)
-    rut = models.CharField(max_length=9)
-    nombre = models.CharField(max_length=50)
-    apellido = models.CharField(max_length=50)
-    fecha_nacimiento = models.DateField()
-    edad = models.FloatField()
-    sexo = models.CharField(max_length=10)
-    direccion = models.CharField(max_length=50)
+    id_persona = models.FloatField(primary_key=True)
+    nombre = models.CharField(max_length=75)
+    apellido = models.CharField(max_length=75)
+    rut = models.FloatField()
     telefono = models.FloatField()
-    correo = models.CharField(max_length=50)
+    correo = models.CharField(max_length=75)
+    c0ntrasenia = models.CharField(max_length=75)
 
     class Meta:
         managed = False
         db_table = 'persona'
 
 
-class Region(models.Model):
-    id_region = models.OneToOneField(Pais, models.DO_NOTHING, db_column='id_region', primary_key=True)
-    nom_region = models.CharField(max_length=50)
+class Registroarri(models.Model):
+    id_registro_arri = models.OneToOneField(Checkin, models.DO_NOTHING, db_column='id_registro_arri', primary_key=True)
+    descripcion = models.CharField(max_length=75)
+    pago_total = models.CharField(max_length=75, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'region'
+        db_table = 'registroarri'
+
+
+class Registropago(models.Model):
+    id_reg_pago = models.OneToOneField('Reserva', models.DO_NOTHING, db_column='id_reg_pago', primary_key=True)
+    descripcion = models.CharField(max_length=75)
+    pago_total = models.FloatField()
+
+    class Meta:
+        managed = False
+        db_table = 'registropago'
 
 
 class Reserva(models.Model):
-    id_reserva = models.OneToOneField('Usuario', models.DO_NOTHING, db_column='id_reserva', primary_key=True)
-    num_acompannante = models.FloatField()
-    fecha_inicio = models.DateField()
+    id_reserva = models.OneToOneField(Departamento, models.DO_NOTHING, db_column='id_reserva', primary_key=True)
+    pago_reserva = models.FloatField()
+    num_acomp = models.FloatField()
+    fecha_entrada = models.DateField()
     fecha_salida = models.DateField()
-    cant_dia = models.FloatField()
-    valor_reserva = models.FloatField()
+    multa = models.FloatField()
+    subtotal = models.FloatField()
 
     class Meta:
         managed = False
         db_table = 'reserva'
 
 
-class Servicio(models.Model):
-    id_servicio = models.OneToOneField(Reserva, models.DO_NOTHING, db_column='id_servicio', primary_key=True)
-    nom_servicio = models.CharField(max_length=50)
-    tipo_servicio = models.CharField(max_length=50)
+class Servicioextra(models.Model):
+    id_servextra = models.OneToOneField('Transporte', models.DO_NOTHING, db_column='id_servextra', primary_key=True)
+    tour = models.CharField(max_length=2)
+    transporte = models.CharField(max_length=2)
+    precio = models.FloatField()
 
     class Meta:
         managed = False
-        db_table = 'servicio'
+        db_table = 'servicioextra'
 
 
-class Tarifa(models.Model):
-    id_tarifa = models.OneToOneField(Servicio, models.DO_NOTHING, db_column='id_tarifa', primary_key=True)
-    valor = models.FloatField()
-
-    class Meta:
-        managed = False
-        db_table = 'tarifa'
-
-
-class TipoUsuario(models.Model):
-    id_tipo_usuario = models.FloatField(primary_key=True)
-    tipo_usuario = models.CharField(max_length=50)
+class Tour(models.Model):
+    id_tour = models.FloatField(primary_key=True)
+    lugar = models.CharField(max_length=75)
+    fecha = models.DateField()
+    estado = models.CharField(max_length=75)
 
     class Meta:
         managed = False
-        db_table = 'tipo_usuario'
+        db_table = 'tour'
 
 
-class Usuario(models.Model):
-    id_usuario = models.FloatField(primary_key=True)
-    correo = models.CharField(max_length=50)
-    contrasena = models.CharField(max_length=20)
-    habilitado = models.FloatField()
+class Transcondc(models.Model):
+    id_conduc = models.OneToOneField('Transvehi', models.DO_NOTHING, db_column='id_conduc', primary_key=True)
+    nombre_conduc = models.CharField(max_length=50)
+    apellido_conduc = models.CharField(max_length=50)
 
     class Meta:
         managed = False
-        db_table = 'usuario'
+        db_table = 'transcondc'
+
+
+class Transporte(models.Model):
+    id_transporte = models.OneToOneField(Transcondc, models.DO_NOTHING, db_column='id_transporte', primary_key=True)
+    direccion = models.CharField(max_length=75)
+    destino = models.CharField(max_length=75)
+    zona = models.CharField(max_length=75)
+    comuna = models.CharField(max_length=75)
+    fecha_trans = models.DateField()
+
+    class Meta:
+        managed = False
+        db_table = 'transporte'
+
+
+class Transvehi(models.Model):
+    id_vehiculo = models.FloatField(primary_key=True)
+    modelo = models.CharField(max_length=50)
+    anio = models.FloatField()
+
+    class Meta:
+        managed = False
+        db_table = 'transvehi'

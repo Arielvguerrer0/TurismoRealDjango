@@ -1,18 +1,18 @@
 from django.contrib import admin
-from .models import CheckIn,CheckOut,Ciudad,Comuna,Departamento,EstadoDepartamento,Multa,Pais,Persona,Region,Reserva,Servicio,Tarifa,TipoUsuario,Usuario
+from .models import Checkin, Checkout, Cliente, Departamento, Metodopago, Persona, Registroarri, Registropago, Reserva, Servicioextra, Tour, Transcondc, Transporte, Transvehi
 
-admin.site.register(CheckIn)
-admin.site.register(CheckOut)
-admin.site.register(Ciudad)
-admin.site.register(Comuna)
+admin.site.register(Checkin)
+admin.site.register(Checkout)
+admin.site.register(Cliente)
 admin.site.register(Departamento)
-admin.site.register(EstadoDepartamento)
-admin.site.register(Multa)
-admin.site.register(Pais)
+admin.site.register(Metodopago)
 admin.site.register(Persona)
-admin.site.register(Region)
+admin.site.register(Registroarri)
+admin.site.register(Registropago)
 admin.site.register(Reserva)
-admin.site.register(Servicio)
-admin.site.register(Tarifa)
-admin.site.register(TipoUsuario)
-admin.site.register(Usuario)
+admin.site.register(Servicioextra)
+admin.site.register(Tour)
+admin.site.register(Transcondc)
+admin.site.register(Transporte)
+admin.site.register(Transvehi)
+

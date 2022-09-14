@@ -8,64 +8,62 @@ from django.contrib.auth import authenticate, login #para autenticar al usuario
 
 # se crean clases para las api
 class CheckInViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = CheckIn.objects.all()
+    queryset = Checkin.objects.all()
     serializer_class = CheckInSerializer
 
 class CheckOutViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = CheckOut.objects.all()
+    queryset = Checkout.objects.all()
     serializer_class = CheckOutSerializer
 
-class CiudadViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = Ciudad.objects.all()
-    serializer_class = CiudadSerializer
-
-class ComunaViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = Comuna.objects.all()
-    serializer_class = ComunaSerializer
+class ClienteViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Cliente.objects.all()
+    serializer_class = ClienteSerializer
 
 class DepartamentoViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
     queryset = Departamento.objects.all()
     serializer_class = DepartamentoSerializer
 
-class EstadoDepartamentoViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = EstadoDepartamento.objects.all()
-    serializer_class = EstadoDepartamentoSerializer
+class MetodopagoViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Metodopago.objects.all()
+    serializer_class = MetodopagoSerializer
 
-class MultaViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = Multa.objects.all()
-    serializer_class = MultaSerializer
-
-class PaisViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = Pais.objects.all()
-    serializer_class = PaisSerializer
-
-class PersonaViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+class PersonatamentoViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
     queryset = Persona.objects.all()
     serializer_class = PersonaSerializer
 
-class RegionViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = Region.objects.all()
-    serializer_class = RegionSerializer
+class RegistroarriViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Registroarri.objects.all()
+    serializer_class = RegistroarriSerializer
+
+class RegistropagoViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Registropago.objects.all()
+    serializer_class = RegistropagoSerializer
 
 class ReservaViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
     queryset = Reserva.objects.all()
     serializer_class = ReservaSerializer
 
-class ServicioViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = Servicio.objects.all()
-    serializer_class = ServicioSerializer
+class ServicioextraViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Servicioextra.objects.all()
+    serializer_class = ServicioextraSerializer
 
-class TarifaViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = Tarifa.objects.all()
-    serializer_class = TarifaSerializer
+class TourViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Tour.objects.all()
+    serializer_class = TourSerializer
 
-class TipoUsuarioViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = CheckOut.objects.all()
-    serializer_class = TipoUsuarioSerializer
+class TranscondcViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Transcondc.objects.all()
+    serializer_class = TranscondcSerializer
 
-class UsuarioViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = Usuario.objects.all()
-    serializer_class = UsuarioSerializer
+class TransporteViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Transporte.objects.all()
+    serializer_class = TransporteSerializer
+
+class TransvehiViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Transvehi.objects.all()
+    serializer_class = TransvehiSerializer
+
+
 
 # se crean las vistas (programación).
 

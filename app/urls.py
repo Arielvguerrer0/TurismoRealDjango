@@ -5,19 +5,18 @@ from rest_framework import routers #para importar los serializers creados y ser 
 router = routers.DefaultRouter()#permite crear urls para las api
 router.register('checkin', CheckInViewset),
 router.register('checkout', CheckOutViewset),
-router.register('ciudad', CiudadViewset),
-router.register('comuna', ComunaViewset),
+router.register('cliente', ClienteViewset),
 router.register('departamento', DepartamentoViewset),
-router.register('estadodepartamento', EstadoDepartamentoViewset),
-router.register('multa', MultaViewset),
-router.register('pais', PaisViewset),
-router.register('persona', PersonaViewset),
-router.register('region', RegionViewset),
+router.register('metodopago', MetodopagoViewset),
+router.register('reg_arriendo', RegistroarriViewset),
+router.register('reg_pago', RegistropagoViewset),
 router.register('reserva', ReservaViewset),
-router.register('servicio', ServicioViewset),
-router.register('tarifa', TarifaViewset),
-router.register('tipousuario', TipoUsuarioViewset),
-router.register('usuario', UsuarioViewset)
+router.register('serve_extra', ServicioextraViewset),
+router.register('tour', TourViewset),
+router.register('trans_conductor', TranscondcViewset),
+router.register('transporte', TransporteViewset),
+router.register('trans_vehiculo', TransvehiViewset),
+
 
 
 urlpatterns = [
