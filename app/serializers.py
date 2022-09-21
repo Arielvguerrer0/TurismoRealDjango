@@ -14,6 +14,10 @@ def generate_request(url, params={}):
     if response:
         return response """
 #fin de la prueba
+class AcompanianteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Acompaniante #la tabla que se utilizara
+        fields = '__all__'#los atributos que se mostraran
 
 class CheckInSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,24 +39,24 @@ class DepartamentoSerializer(serializers.ModelSerializer):
         model = Departamento #la tabla que se utilizara
         fields = '__all__'#los atributos que se mostraran
 
-class MetodopagoSerializer(serializers.ModelSerializer):
+class CiudadSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Metodopago #la tabla que se utilizara
+        model = Ciudad #la tabla que se utilizara
         fields = '__all__'#los atributos que se mostraran
 
-class PersonaSerializer(serializers.ModelSerializer):
+class ComunaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Persona #la tabla que se utilizara
+        model = Comuna #la tabla que se utilizara
         fields = '__all__'#los atributos que se mostraran
 
-class RegistroarriSerializer(serializers.ModelSerializer):
+class ConductorSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Registroarri #la tabla que se utilizara
+        model = Conductor #la tabla que se utilizara
         fields = '__all__'#los atributos que se mostraran
 
-class RegistropagoSerializer(serializers.ModelSerializer):
+class FuncionarioSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Registropago #la tabla que se utilizara
+        model = Funcionario #la tabla que se utilizara
         fields = '__all__'#los atributos que se mostraran
 
 class ReservaSerializer(serializers.ModelSerializer):
@@ -68,21 +72,32 @@ class ServicioextraSerializer(serializers.ModelSerializer):
 class TourSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tour #la tabla que se utilizara
-        fields = '__all__'#los atributos que se mostraran 
-class TranscondcSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Transcondc #la tabla que se utilizara
         fields = '__all__'#los atributos que se mostraran
 
-class TransporteSerializer(serializers.ModelSerializer):
+class MantenimientoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Transporte #la tabla que se utilizara
+        model = Mantenimiento #la tabla que se utilizara
         fields = '__all__'#los atributos que se mostraran
 
-class TransvehiSerializer(serializers.ModelSerializer):
+class MultaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Transvehi #la tabla que se utilizara
+        model = Multa #la tabla que se utilizara
+        fields = '__all__'#los atributos que se mostraran
+
+class PagoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pago #la tabla que se utilizara
         fields = '__all__'#los atributos que se mostraran 
+
+class RegionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Region #la tabla que se utilizara
+        fields = '__all__'#los atributos que se mostraran
+
+class VehiculoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vehiculo #la tabla que se utilizara
+        fields = '__all__'#los atributos que se mostraran
 
 
 

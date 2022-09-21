@@ -4,6 +4,8 @@ from rest_framework import viewsets
 from .serializers import *
 from .forms import * #importa todos los forms que se crean
 from django.contrib.auth import authenticate, login #para autenticar al usuario
+from django.db import connection #trae los procesos almacenados
+from rest_framework.response import Response
 
 
 # se crean clases para las api
@@ -22,26 +24,36 @@ class ClienteViewset(viewsets.ModelViewSet):#este se encarga de mostrar los dato
 class DepartamentoViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
     queryset = Departamento.objects.all()
     serializer_class = DepartamentoSerializer
+    """ def listado_departamento():
+        django_cursor = connection.cursor()
+        cursor = django_cursor.connection.cursor()
+        out_cur = django_cursor.connection.cursor()    
+        cursor.callproc("SP_LISTAR_DEPARTAMENTO",[out_cur])
+    
+        lista = []
+        for fila in out_cur:
+            lista.append(fila)
+        return Response(lista) """
+    
+class CiudadViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Ciudad.objects.all()
+    serializer_class = CiudadSerializer
 
-class MetodopagoViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = Metodopago.objects.all()
-    serializer_class = MetodopagoSerializer
+class ComunaViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Comuna.objects.all()
+    serializer_class = ComunaSerializer
 
-class PersonatamentoViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = Persona.objects.all()
-    serializer_class = PersonaSerializer
+class PagoViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Pago.objects.all()
+    serializer_class = PagoSerializer
 
-class RegistroarriViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = Registroarri.objects.all()
-    serializer_class = RegistroarriSerializer
+class ConductorViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Conductor.objects.all()
+    serializer_class = ConductorSerializer
 
-class RegistropagoViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = Registropago.objects.all()
-    serializer_class = RegistropagoSerializer
-
-class ReservaViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = Reserva.objects.all()
-    serializer_class = ReservaSerializer
+class FuncionarioViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Funcionario.objects.all()
+    serializer_class = FuncionarioSerializer
 
 class ServicioextraViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
     queryset = Servicioextra.objects.all()
@@ -51,23 +63,36 @@ class TourViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y
     queryset = Tour.objects.all()
     serializer_class = TourSerializer
 
-class TranscondcViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = Transcondc.objects.all()
-    serializer_class = TranscondcSerializer
+class ReservaViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Reserva.objects.all()
+    serializer_class = ReservaSerializer
 
-class TransporteViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = Transporte.objects.all()
-    serializer_class = TransporteSerializer
+class MantenimientoViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Mantenimiento.objects.all()
+    serializer_class = MantenimientoSerializer
 
-class TransvehiViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
-    queryset = Transvehi.objects.all()
-    serializer_class = TransvehiSerializer
+class MultaViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Multa.objects.all()
+    serializer_class = MultaSerializer
+
+class RegionViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Region.objects.all()
+    serializer_class = RegionSerializer
+
+class VehiculoViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Vehiculo.objects.all()
+    serializer_class = VehiculoSerializer
+
+class AcompanianteViewset(viewsets.ModelViewSet):#este se encarga de mostrar los datos y hasta guardar
+    queryset = Acompaniante.objects.all()
+    serializer_class = AcompanianteSerializer
 
 
 
 # se crean las vistas (programación).
 
 def home(request):
+    print(listado_departamento())
     return render(request, 'app/home.html')
 
 def registro(request):
@@ -87,3 +112,14 @@ def registro(request):
 
 def listar_ciudad(request):
     return render(request, 'app/ciudad.html')
+
+def listado_departamento():
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()    
+    cursor.callproc("SP_LISTAR_DEPARTAMENTO",[out_cur])
+    
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
