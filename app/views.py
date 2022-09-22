@@ -6,6 +6,7 @@ from .forms import * #importa todos los forms que se crean
 from django.contrib.auth import authenticate, login #para autenticar al usuario
 from django.db import connection #trae los procesos almacenados
 from rest_framework.response import Response
+from django.views import View
 
 
 # se crean clases para las api
@@ -87,12 +88,24 @@ class AcompanianteViewset(viewsets.ModelViewSet):#este se encarga de mostrar los
     queryset = Acompaniante.objects.all()
     serializer_class = AcompanianteSerializer
 
+#prueba 
+class DepartamentoView(View):
+    def get(self,request):
+        django_cursor = connection.cursor()
+        cursor = django_cursor.connection.cursor()
+        out_cur = django_cursor.connection.cursor()    
+        cursor.callproc("SP_LISTAR_DEPARTAMENTO",[out_cur])
+    
+        lista = []
+        for fila in out_cur:
+            lista.append(fila)
+        return lista
 
 
 # se crean las vistas (programación).
 
 def home(request):
-    print(listado_departamento())
+    print(DepartamentoView())
     return render(request, 'app/home.html')
 
 def registro(request):
@@ -113,7 +126,7 @@ def registro(request):
 def listar_ciudad(request):
     return render(request, 'app/ciudad.html')
 
-def listado_departamento():
+""" def listado_departamento():
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()    
@@ -122,4 +135,4 @@ def listado_departamento():
     lista = []
     for fila in out_cur:
         lista.append(fila)
-    return lista
+    return lista """
