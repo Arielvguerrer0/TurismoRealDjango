@@ -86,46 +86,77 @@ class AcompanianteViewset(viewsets.ModelViewSet):#este se encarga de mostrar los
 def departamento_list(request):
     if request.method == 'GET':
         get_departamento = listar_departamento()
-
         if(get_departamento != []):
-            user_find = []
+            departamentos = []
             res = {}
-            for user in get_departamento:
+            for depa in get_departamento:
                 res = {}
-                res['id_depto'] = user[0]
-                res['nombre_dep'] = user[1]
-                res['direccion_depto'] = user[2]
-                res['habitacion'] = user[3]
-                res['banio'] = user[4]
-                user_find.append(res)
-            return Response(user_find, status=status.HTTP_200_OK)
+                res['ID_DEPTO'] = depa[0]
+                res['NOMBRE_DEP'] = depa[1]
+                res['DIRECCION_DEPTO'] = depa[2]
+                res['DESCRIPCION_DEPTO'] = depa[3]
+                res['HABITACION'] = depa[4]
+                res['CALEFACCION'] = depa[5]
+                res['INTERNET'] = depa[6]
+                res['AMOBLADO'] = depa[7]
+                res['TELEVICION'] = depa[8]
+                res['VALOR_DIARIO'] = depa[9]
+                res['DISPONIBLE'] = depa[10]
+
+                departamentos.append(res)
+            return Response(departamentos, status=status.HTTP_200_OK)
         elif(get_departamento == []):
-            return Response({"Error": "No se encontraron usuarios"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"Error": "No se encontraron departamentos"}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 @api_view(['GET'])
 def departamento_list_id(request,id):
     if request.method == 'GET':
         get_departamento = buscar_departamento(id)
-
         if(get_departamento != []):
-            user_find = []
+            departamentos = []
             res = {}
-            for user in get_departamento:
+            for depa in get_departamento:
                 res = {}
-                res['id_depto'] = user[0]
-                res['nombre_dep'] = user[1]
-                res['direccion_depto'] = user[2]
-                res['habitacion'] = user[3]
-                res['banio'] = user[4]
-                user_find.append(res)
-            return Response(user_find, status=status.HTTP_200_OK)
+                res['ID_DEPTO'] = depa[0]
+                res['NOMBRE_DEP'] = depa[1]
+                res['DIRECCION_DEPTO'] = depa[2]
+                res['DESCRIPCION_DEPTO'] = depa[3]
+                res['HABITACION'] = depa[4]
+                res['CALEFACCION'] = depa[5]
+                res['INTERNET'] = depa[6]
+                res['AMOBLADO'] = depa[7]
+                res['TELEVICION'] = depa[8]
+                res['VALOR_DIARIO'] = depa[9]
+                res['DISPONIBLE'] = depa[10]
+                departamentos.append(res)
+            return Response(departamentos, status=status.HTTP_200_OK)
         elif(get_departamento == []):
-            return Response({"Error": "No se encontraron usuarios"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"Error": "No se existen departamentos con ese ID"}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def departamento_create(request):
+    if request.method == 'POST':
+        NOMBRE_DEP = request.data.get('NOMBRE_DEP_V')
+        print (NOMBRE_DEP)
+        DIRECCION_DEPTO = request.data.get('DIRECCION_DEPTO_V')
+        DESCRIPCION_DEPTO = request.data.get('DESCRIPCION_DEPTO_V')
+        HABITACION = request.data.get('HABITACION_V')
+        CALEFACCION = request.data.get('CALEFACCION_V')
+        INTERNET = request.data.get('INTERNET_V')
+        AMOBLADO = request.data.get('AMOBLADO_V')
+        TELEVICION = request.data.get('TELEVICION_V')
+        VALOR_DIARIO = request.data.get('VALOR_DIARIO_V')
+        DISPONIBLE = request.data.get('DISPONIBLE_V')
+        salida = request.data.get('salida_V')
+        if salida == 1:
+            return Response({'response':'Se creo correctamente la region'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)            
+
 
 @api_view(['POST'])
 def region(request):
@@ -137,20 +168,6 @@ def region(request):
         else:
             return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
-"""   if request.method == 'GET':
-        listaDepartamento = Departamento.objects.all()
-       
-        Departamentoserializer = DepartamentoSerializer(listaDepartamento, many=True)
-        print(' esto es DEPARTAMENTO SERIALIZER',DepartamentoSerializer);
-        return Response(Departamentoserializer.data) """
-
-"""     elif request.method == 'POST':
-        serializer = SnippetSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) """
 
 
 def home(request):

@@ -85,38 +85,18 @@ class Conductor(models.Model):
 
 
 class Departamento(models.Model):
-    CALE_CHOICES = (
-        ('Si', 'Si'),
-        ('No', 'No'),
-    )
-    INTERNET_CHOICES = (
-        ('Si', 'Si'),
-        ('No', 'No'),
-    )
-    AMOBLADO_CHOICES = (
-        ('Si', 'Si'),
-        ('No', 'No'),
-    )
-    TELEVICION_CHOICES = (
-        ('Si', 'Si'),
-        ('No', 'No'),
-    )
-    DISPONIBILIDADDEPART_CHOICES = (
-        ('Si', 'Si'),
-        ('No', 'No'),
-    )
-    id_depto = models.OneToOneField('Region', models.DO_NOTHING, db_column='id_depto', primary_key=True)
+    id_depto = models.IntegerField(primary_key=True)
     nombre_dep = models.CharField(max_length=30)
     direccion_depto = models.CharField(max_length=75)
     descripcion_depto = models.CharField(max_length=300, blank=True, null=True)
     habitacion = models.FloatField()
     banio = models.FloatField()
-    calefaccion = models.CharField(max_length=2, choices=CALE_CHOICES, default="Si")
-    internet = models.CharField(max_length=2,choices=INTERNET_CHOICES, default="Si")
-    amoblado = models.CharField(max_length=2,choices=AMOBLADO_CHOICES, default="Si")
-    televicion = models.CharField(max_length=2,choices=TELEVICION_CHOICES, default="Si")
+    calefaccion = models.CharField(max_length=2)
+    internet = models.CharField(max_length=2)
+    amoblado = models.CharField(max_length=2)
+    televicion = models.CharField(max_length=2)
     valor_diario = models.FloatField()
-    disponible = models.CharField(max_length=2,choices=DISPONIBILIDADDEPART_CHOICES, default="Si")
+    disponible = models.CharField(max_length=2)
 
     class Meta:
         managed = False

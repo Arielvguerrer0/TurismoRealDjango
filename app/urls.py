@@ -6,7 +6,7 @@ router = routers.DefaultRouter()#permite crear urls para las api
 router.register('Checkin', CheckInViewset),
 router.register('Checkout', CheckOutViewset),
 router.register('Cliente', ClienteViewset),
-#router.register('Departamento', DepartamentoViewset),
+router.register('Departamento', DepartamentoViewset), ####
 router.register('Acompaniante', AcompanianteViewset),
 router.register('Ciudad', CiudadViewset),
 router.register('Comuna', ComunaViewset),
@@ -31,5 +31,6 @@ urlpatterns = [
     #path('departamento/',DepartamentoView.as_view(), name='departamento_list')
     path('departamento/', departamento_list),
     path('departamento/<id>', departamento_list_id),
+    path('departamento/crear/', departamento_create),
     path('region/', region),
 ]
