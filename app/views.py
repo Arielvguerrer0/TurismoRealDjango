@@ -124,12 +124,13 @@ def departamento_list_id(request,id):
                 res['DIRECCION_DEPTO'] = depa[2]
                 res['DESCRIPCION_DEPTO'] = depa[3]
                 res['HABITACION'] = depa[4]
-                res['CALEFACCION'] = depa[5]
-                res['INTERNET'] = depa[6]
-                res['AMOBLADO'] = depa[7]
-                res['TELEVICION'] = depa[8]
-                res['VALOR_DIARIO'] = depa[9]
-                res['DISPONIBLE'] = depa[10]
+                res['BANIO'] = depa[5]
+                res['CALEFACCION'] = depa[6]
+                res['INTERNET'] = depa[7]
+                res['AMOBLADO'] = depa[8]
+                res['TELEVICION'] = depa[9]
+                res['VALOR_DIARIO'] = depa[10]
+                res['DISPONIBLE'] = depa[11]
                 departamentos.append(res)
             return Response(departamentos, status=status.HTTP_200_OK)
         elif(get_departamento == []):
@@ -140,20 +141,20 @@ def departamento_list_id(request,id):
 @api_view(['POST'])
 def departamento_create(request):
     if request.method == 'POST':
-        NOMBRE_DEP = request.data.get('NOMBRE_DEP_V')
-        print (NOMBRE_DEP)
-        DIRECCION_DEPTO = request.data.get('DIRECCION_DEPTO_V')
-        DESCRIPCION_DEPTO = request.data.get('DESCRIPCION_DEPTO_V')
-        HABITACION = request.data.get('HABITACION_V')
-        CALEFACCION = request.data.get('CALEFACCION_V')
-        INTERNET = request.data.get('INTERNET_V')
-        AMOBLADO = request.data.get('AMOBLADO_V')
-        TELEVICION = request.data.get('TELEVICION_V')
-        VALOR_DIARIO = request.data.get('VALOR_DIARIO_V')
-        DISPONIBLE = request.data.get('DISPONIBLE_V')
-        salida = request.data.get('salida_V')
+        nombre_dep = request.data.get('nombre_dep')
+        direccion_depto = request.data.get('direccion_depto')
+        descripcion_depto = request.data.get('descripcion_depto')
+        habitacion = request.data.get('habitacion')
+        banio= request.data.get('banio')
+        calefaccion = request.data.get('calefaccion')
+        internet = request.data.get('internet')
+        amoblado = request.data.get('amoblado')
+        televicion = request.data.get('televicion')
+        valor_diario = request.data.get('valor_diario')
+        disponible= request.data.get('disponible')
+        salida = crear_departamento(nombre_dep,direccion_depto,descripcion_depto,habitacion,banio,calefaccion,internet,amoblado,televicion,valor_diario,disponible)
         if salida == 1:
-            return Response({'response':'Se creo correctamente la region'}, status=status.HTTP_201_CREATED)
+            return Response({'response':'Se creo correctamente la Departamento'}, status=status.HTTP_201_CREATED)
         else:
             return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)            
 
