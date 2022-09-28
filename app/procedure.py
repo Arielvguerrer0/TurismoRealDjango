@@ -27,8 +27,16 @@ def crear_departamento(nombre_dep,direccion_depto,descripcion_depto,habitacion,b
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     salida = cursor.var(cx_Oracle.NUMBER)
-    cursor.callproc("SP_CREAR_DEPARTAMENTOS", [nombre_dep,direccion_depto,descripcion_depto,habitacion,banio,calefaccion,internet,amoblado,televicion,valor_diario,disponible,salida])
+    cursor.callproc("SP_CREAR_DEPARTAMENTO", [nombre_dep,direccion_depto,descripcion_depto,habitacion,banio,calefaccion,internet,amoblado,televicion,valor_diario,disponible,salida])
     return salida.getvalue()
+
+def modificar_departamento(nombre_dep,direccion_depto,descripcion_depto,habitacion,banio,calefaccion,internet,amoblado,televicion,valor_diario,disponible):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("SP_MODIFICAR_DEPARTAMENTO", [nombre_dep,direccion_depto,descripcion_depto,habitacion,banio,calefaccion,internet,amoblado,televicion,valor_diario,disponible,salida])
+    return salida.getvalue()
+
 
 def crear_region(nom_region):
     django_cursor = connection.cursor()

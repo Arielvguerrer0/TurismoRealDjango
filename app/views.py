@@ -96,12 +96,13 @@ def departamento_list(request):
                 res['DIRECCION_DEPTO'] = depa[2]
                 res['DESCRIPCION_DEPTO'] = depa[3]
                 res['HABITACION'] = depa[4]
-                res['CALEFACCION'] = depa[5]
-                res['INTERNET'] = depa[6]
-                res['AMOBLADO'] = depa[7]
-                res['TELEVICION'] = depa[8]
-                res['VALOR_DIARIO'] = depa[9]
-                res['DISPONIBLE'] = depa[10]
+                res['BANIO'] = depa[5]
+                res['CALEFACCION'] = depa[6]
+                res['INTERNET'] = depa[7]
+                res['AMOBLADO'] = depa[8]
+                res['TELEVICION'] = depa[9]
+                res['VALOR_DIARIO'] = depa[10]
+                res['DISPONIBLE'] = depa[11]
 
                 departamentos.append(res)
             return Response(departamentos, status=status.HTTP_200_OK)
@@ -142,13 +143,15 @@ def departamento_list_id(request,id):
 def departamento_create(request):
     if request.method == 'POST':
         nombre_dep = request.data.get('nombre_dep')
+        print ("log1",nombre_dep)
         direccion_depto = request.data.get('direccion_depto')
         descripcion_depto = request.data.get('descripcion_depto')
         habitacion = request.data.get('habitacion')
-        banio= request.data.get('banio')
+        banio = request.data.get('banio')
         calefaccion = request.data.get('calefaccion')
         internet = request.data.get('internet')
         amoblado = request.data.get('amoblado')
+        print ("log2",amoblado)
         televicion = request.data.get('televicion')
         valor_diario = request.data.get('valor_diario')
         disponible= request.data.get('disponible')
