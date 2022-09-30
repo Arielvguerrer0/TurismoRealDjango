@@ -143,7 +143,6 @@ def departamento_list_id(request,id):
 def departamento_create(request):
     if request.method == 'POST':
         nombre_dep = request.data.get('nombre_dep')
-        print ("log1",nombre_dep)
         direccion_depto = request.data.get('direccion_depto')
         descripcion_depto = request.data.get('descripcion_depto')
         habitacion = request.data.get('habitacion')
@@ -151,7 +150,6 @@ def departamento_create(request):
         calefaccion = request.data.get('calefaccion')
         internet = request.data.get('internet')
         amoblado = request.data.get('amoblado')
-        print ("log2",amoblado)
         televicion = request.data.get('televicion')
         valor_diario = request.data.get('valor_diario')
         disponible= request.data.get('disponible')
@@ -159,8 +157,49 @@ def departamento_create(request):
         if salida == 1:
             return Response({'response':'Se creo correctamente la Departamento'}, status=status.HTTP_201_CREATED)
         else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
+
+
+@api_view(['POST'])
+def departamento_modify(request, id):
+    if request.method == 'POST':
+        #Primero deberiamos verificar que el departamento exista
+        get_departamento = buscar_departamento(id)
+        if(get_departamento == []):
+            #Revisar que cuando no se encuentre id deberia enviar mensaje de error.
+            return  Response({'response':'No existe departamento con ese ID'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            nombre_dep = request.data.get('nombre_dep')
+            print('NOMBRE', nombre_dep)
+            direccion_depto = request.data.get('direccion_depto')
+            descripcion_depto = request.data.get('descripcion_depto')
+            habitacion = request.data.get('habitacion')
+            banio = request.data.get('banio')
+            calefaccion = request.data.get('calefaccion')
+            internet = request.data.get('internet')
+            amoblado = request.data.get('amoblado')
+            televicion = request.data.get('televicion')
+            valor_diario = request.data.get('valor_diario')
+            disponible= request.data.get('disponible')
+        salida = modificar_departamento(id,nombre_dep,direccion_depto,descripcion_depto,habitacion,banio,calefaccion,internet,amoblado,televicion,valor_diario,disponible)
+        if salida == 1:
+            return Response({'response':'Se modifico correctamente el Departamento'}, status=status.HTTP_200_OK)
+        else:
             return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)            
 
+@api_view(['POST'])
+def departamento_delete(request, id):
+    if request.method == 'POST':
+        get_departamento = buscar_departamento(id)
+        if(get_departamento == []):
+            ##Revisar que cuando no se encuentre id deberia enviar mensaje de error.
+            return  Response({'response':'No existe departamento con ese ID'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            salida = eliminar_departamento(id)
+    if salida == 1:
+        return Response({'response':'Se eliminó correctamente el Departamento'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
 
 @api_view(['POST'])
 def region(request):
@@ -171,8 +210,6 @@ def region(request):
             return Response({'response':'Se creo correctamente la region'}, status=status.HTTP_201_CREATED)
         else:
             return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
 
 def home(request):
     

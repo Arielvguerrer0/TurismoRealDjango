@@ -32,5 +32,7 @@ urlpatterns = [
     path('departamento/', departamento_list),
     path('departamento/<id>', departamento_list_id),
     path('departamento/crear/', departamento_create),
+    path('departamento/modificar/<id>', departamento_modify),
+    path('departamento/eliminar/<id>', departamento_delete),
     path('region/', region),
 ]
