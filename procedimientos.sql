@@ -12,26 +12,33 @@ BEGIN
 END;
 
 create or replace NONEDITIONABLE PROCEDURE sp_crear_departamentos(
-    nombre_dep varchar2,
-    direccion_depto varchar2,
-    descripcion_depto char,
-    HABITACION number,
-    BANIO NUMBER,
-    CALEFACCION char,
-    INTERNET char,
-    AMOBLADO char,
-    TELEVICION char,
-    VALOR_DIARIO number,
-    DISPONIBLE char,
+    nom_depto varchar2,
+    desc_depto varchar2,
+    direccion VARCHAR2,
+    cant_habitacion NUMBER,
+    cant_banio NUMBER,
+    CALEFACCION VARCHAR2,
+    INTERNET VARCHAR2,
+    AMOBLADO VARCHAR2,
+    TELEVISION VARCHAR2,
+    DISPONIBLE VARCHAR2,
+    VALOR_DIA NUMBER,
+    COMUNA_ID_COMUNA NUMBER,    
     salida out number)
 IS
 BEGIN
-    insert into departamento values (seq_departamentos.NEXTVAL,nombre_dep,direccion_depto,descripcion_depto,HABITACION,BANIO,CALEFACCION,INTERNET,AMOBLADO,TELEVICION,VALOR_DIARIO,DISPONIBLE);
+    insert into departamento values (seq_departamentos.NEXTVAL,nom_depto,desc_depto,direccion,cant_habitacion,cant_banio,calefaccion,internet,amoblado,television,disponible,valor_dia,comuna_id_comuna);
     salida:= 1;
 EXCEPTION
     WHEN OTHERS THEN
         salida := 0;
 END;
+
+create sequence seq_departamentos
+start with 1
+increment by 1
+maxvalue 99999
+minvalue 1;
 
 create or replace NONEDITIONABLE PROCEDURE sp_crear_region(nom_region VARCHAR, respuesta out number)
 IS
