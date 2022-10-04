@@ -8,7 +8,7 @@ END;
 create or replace NONEDITIONABLE PROCEDURE sp_buscar_departamento(id number,departamento out SYS_REFCURSOR)
 IS
 BEGIN
-    OPEN departamento for SELECT * FROM departamento WHERE id_depto = id;
+    OPEN departamento for SELECT * FROM departamento WHERE id_departamento = id;
 END;
 
 create or replace NONEDITIONABLE PROCEDURE sp_crear_departamentos(
@@ -50,7 +50,7 @@ DELETE
 FROM
     departamento
 WHERE
-    id_depto = id;
+    id_departamento = id;
     salida:= 1;
 EXCEPTION
     WHEN OTHERS THEN
@@ -70,33 +70,35 @@ BEGIN
 END;
 
 create or replace NONEDITIONABLE PROCEDURE sp_modificar_departamento(id number,
-    v_nombre_dep varchar2,
-    v_direccion_depto varchar2,
-    v_descripcion_depto char,
-    v_HABITACION number,
-    v_BANIO NUMBER,
-    v_CALEFACCION char,
-    v_INTERNET char,
-    v_AMOBLADO char,
-    v_TELEVICION char,
-    v_VALOR_DIARIO number,
-    v_DISPONIBLE char,
+    v_nom_depto varchar2,
+    v_desc_depto varchar2,
+    v_direccion VARCHAR2,
+    v_cant_habitacion NUMBER,
+    v_cant_banio NUMBER,
+    v_CALEFACCION VARCHAR2,
+    v_INTERNET VARCHAR2,
+    v_AMOBLADO VARCHAR2,
+    v_TELEVISION VARCHAR2,
+    v_DISPONIBLE VARCHAR2,
+    v_VALOR_DIA NUMBER,
+    V_COMUNA_ID_COMUNA NUMBER,    
     salida out number)
 AS 
 BEGIN 
 UPDATE departamento SET 
-    nombre_dep = v_nombre_dep,
-    direccion_depto = v_direccion_depto,
-    descripcion_depto = v_descripcion_depto,
-    HABITACION = v_HABITACION,
-    BANIO = v_BANIO,
+    nom_depto = v_nom_depto,
+    desc_depto = v_desc_depto,
+    direccion = v_direccion,
+    cant_habitacion = v_cant_habitacion,
+    cant_banio = v_cant_banio,
     CALEFACCION = v_CALEFACCION,
     INTERNET = v_INTERNET,
     AMOBLADO = v_AMOBLADO,
-    TELEVICION = v_TELEVICION,
-    VALOR_DIARIO = v_VALOR_DIARIO,
-    DISPONIBLE = v_DISPONIBLE
-    WHERE id_depto = id;
+    TELEVISION = v_TELEVISION,
+    DISPONIBLE = v_DISPONIBLE,
+    VALOR_DIA = v_VALOR_DIA,
+    comuna_id_comuna = v_comuna_id_comuna
+    WHERE id_departamento = id;
 salida:= 1;
 EXCEPTION
     WHEN OTHERS THEN
