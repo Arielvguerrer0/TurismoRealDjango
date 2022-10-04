@@ -92,17 +92,18 @@ def departamento_list(request):
             for depa in get_departamento:
                 res = {}
                 res['ID_DEPTO'] = depa[0]
-                res['NOMBRE_DEP'] = depa[1]
-                res['DIRECCION_DEPTO'] = depa[2]
-                res['DESCRIPCION_DEPTO'] = depa[3]
-                res['HABITACION'] = depa[4]
-                res['BANIO'] = depa[5]
+                res['NOM_DEPTO'] = depa[1]
+                res['DESC_DEPTO'] = depa[2]
+                res['DIRECCION'] = depa[3]
+                res['CANT_HABITACION'] = depa[4]
+                res['CANT_BANIO'] = depa[5]
                 res['CALEFACCION'] = depa[6]
                 res['INTERNET'] = depa[7]
                 res['AMOBLADO'] = depa[8]
-                res['TELEVICION'] = depa[9]
-                res['VALOR_DIARIO'] = depa[10]
-                res['DISPONIBLE'] = depa[11]
+                res['TELEVISION'] = depa[9]
+                res['DISPONIBLE'] = depa[10]
+                res['VALOR_DIA'] = depa[11]
+                res['COMUNA_ID_COMUNA'] = depa[12]
 
                 departamentos.append(res)
             return Response(departamentos, status=status.HTTP_200_OK)
