@@ -245,3 +245,60 @@ def listar_ciudad(request):
     for fila in out_cur:
         lista.append(fila)
     return lista """
+
+
+@api_view(['POST'])
+def usuario_create(request):
+    if request.method == 'POST':
+        NOM_USUARIO = request.data.get('NOM_USUARIO')
+        CORREO_USUARIO = request.data.get('CORREO_USUARIO')
+        CONTRASENIA = request.data.get('CONTRASENIA')
+        ESTADO_USUARIO = request.data.get('ESTADO_USUARIO')
+        TIPO_USUARIO_ID_TIPO_USUARIO = request.data.get('TIPO_USUARIO_ID_TIPO_USUARIO')
+        
+        salida = crear_usuario(NOM_USUARIO,CORREO_USUARIO,CONTRASENIA,ESTADO_USUARIO,TIPO_USUARIO_ID_TIPO_USUARIO)
+        if salida == 1:
+            return Response({'response':'Se creo correctamente el usuario'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
+
+@api_view(['POST'])
+def usuario_modify(request, id):
+    if request.method == 'POST':
+        usuario = buscar_usuario(id)
+        if(usuario == []):
+            return  Response({'response':'No existe usuario con ese ID'}, status=status.HTTP_404_NOT_FOUND)
+
+        NOM_USUARIO = request.data.get('NOM_USUARIO')
+        CORREO_USUARIO = request.data.get('CORREO_USUARIO')
+        CONTRASENIA = request.data.get('CONTRASENIA')
+        ESTADO_USUARIO = request.data.get('ESTADO_USUARIO')
+        TIPO_USUARIO_ID_TIPO_USUARIO = request.data.get('TIPO_USUARIO_ID_TIPO_USUARIO')
+        
+        salida = modificar_usuario(id,NOM_USUARIO,CORREO_USUARIO,CONTRASENIA,ESTADO_USUARIO,TIPO_USUARIO_ID_TIPO_USUARIO)
+        if salida == 1:
+            return Response({'response':'Se modifico correctamente el usuario'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
+
+@api_view(['GET'])
+def get_usuario(request,id):
+    if request.method == 'GET':
+        get_usuario = buscar_usuario(id)
+        if(get_usuario != []):
+            usuario = []
+            res = {}
+            for user in get_usuario:
+                res = {}
+                res['NOM_USUARIO'] = user[0]
+                res['CORREO_USUARIO'] = user[1]
+                res['CONTRASENIA'] = user[2]
+                res['ESTADO_USUARIO'] = user[3]
+                res['TIPO_USUARIO_ID_TIPO_USUARIO'] = user[4]
+                
+                usuario.append(res)
+            return Response(usuario, status=status.HTTP_200_OK)
+        elif(get_usuario == []):
+            return Response({"Error": "No existe usuario con ese ID"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)

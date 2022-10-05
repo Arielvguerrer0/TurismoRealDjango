@@ -35,4 +35,8 @@ urlpatterns = [
     path('departamento/modificar/<id>', departamento_modify),
     path('departamento/eliminar/<id>', departamento_delete),
     path('region/', region),
+    #Usuarios
+    path('usuario/crear/', usuario_create),
+    path('usuario/<id>', get_usuario),
+    path('usuario/modificar/<id>', modificar_usuario),
 ]

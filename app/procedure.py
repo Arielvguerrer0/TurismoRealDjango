@@ -51,3 +51,31 @@ def crear_region(nom_region):
     salida = cursor.var(cx_Oracle.NUMBER)
     cursor.callproc("SP_CREAR_REGION", [nom_region, salida])
     return salida.getvalue()
+
+
+## Usuarios    
+
+def crear_usuario(NOM_USUARIO,CORREO_USUARIO, CONTRASENIA, ESTADO_USUARIO, TIPO_USUARIO_ID_TIPO_USUARIO):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("SP_CREAR_USUARIO", [NOM_USUARIO,CORREO_USUARIO, CONTRASENIA, ESTADO_USUARIO, TIPO_USUARIO_ID_TIPO_USUARIO, salida])
+    return salida.getvalue()
+
+def buscar_usuario(id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()    
+    cursor.callproc("SP_BUSCAR_USUARIO",[id,out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
+def modificar_usuario(ID,NOM_USUARIO,CORREO_USUARIO, CONTRASENIA, ESTADO_USUARIO, TIPO_USUARIO_ID_TIPO_USUARIO):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("SP_MODIFICAR_USUARIO", [ID,NOM_USUARIO,CORREO_USUARIO, CONTRASENIA, ESTADO_USUARIO, TIPO_USUARIO_ID_TIPO_USUARIO, salida])
+    return salida.getvalue()
