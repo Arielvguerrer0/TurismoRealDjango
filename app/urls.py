@@ -28,7 +28,6 @@ urlpatterns = [
     path('ciudad/', listar_ciudad, name="listar_ciudad"),
     path('api/', include(router.urls)),
     path('registro/', registro, name="registro"),
-    #path('departamento/',DepartamentoView.as_view(), name='departamento_list')
     path('departamento/', departamento_list),
     path('departamento/<id>', departamento_list_id),
     path('departamento/crear/', departamento_create),

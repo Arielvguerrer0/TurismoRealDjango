@@ -232,20 +232,6 @@ def registro(request):
         data["form"] = formulario
     return render(request, 'registration/registro.html',data)
 
-def listar_ciudad(request):
-    return render(request, 'app/ciudad.html')
-
-""" def listado_departamento():
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    out_cur = django_cursor.connection.cursor()    
-    cursor.callproc("SP_LISTAR_DEPARTAMENTO",[out_cur])
-    
-    lista = []
-    for fila in out_cur:
-        lista.append(fila)
-    return lista """
-
 
 @api_view(['POST'])
 def usuario_create(request):
