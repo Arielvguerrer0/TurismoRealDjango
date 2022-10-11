@@ -53,7 +53,18 @@ def crear_region(nom_region):
     return salida.getvalue()
 
 
-## Usuarios    
+## Usuarios
+def listar_usuario():
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()    
+    cursor.callproc("SP_LISTAR_USUARIO",[out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
 
 def crear_usuario(NOM_USUARIO,CORREO_USUARIO, CONTRASENIA, ESTADO_USUARIO, TIPO_USUARIO_ID_TIPO_USUARIO):
     django_cursor = connection.cursor()

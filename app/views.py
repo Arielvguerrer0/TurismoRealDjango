@@ -81,6 +81,8 @@ class AcompanianteViewset(viewsets.ModelViewSet):#este se encarga de mostrar los
     queryset = Acompaniante.objects.all()
     serializer_class = AcompanianteSerializer
 
+def home(request):
+    return render(request, 'app/home.html')
 
 @api_view(['GET', 'POST'])
 def departamento_list(request):
@@ -201,37 +203,26 @@ def departamento_delete(request, id):
     if salida == 1:
         return Response({'response':'Se eliminó correctamente el Departamento'}, status=status.HTTP_200_OK)
     else:
-        return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
+        return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-@api_view(['POST'])
-def region(request):
-    if request.method == 'POST':
-        nom_region = request.data.get('nom_region')
-        region = crear_region(nom_region)
-        if region == 1:
-            return Response({'response':'Se creo correctamente la region'}, status=status.HTTP_201_CREATED)
+@api_view(['GET', 'POST'])
+def usuario_list(request):
+    if request.method == 'GET':
+        get_usuario = listar_usuario()
+        if(get_usuario != []):
+            usuarios = []
+            res = {}
+            for usuario in get_usuario:
+                res = {}
+                res['NOM_USUARIO'] = usuario[0]
+                res['CORREO_USUARIO'] = usuario[1]
+                res['TIPO_USUARIO'] = usuario[2]
+                usuarios.append(res)
+            return Response(usuarios, status=status.HTTP_200_OK)
+        elif(get_usuario == []):
+            return Response({"Error": "No se encontraron usuarios"}, status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-def home(request):
-    
-    return render(request, 'app/home.html')
-
-def registro(request):
-    data = {
-        'form': CustomUserCreationForm
-    }
-    if request.method == 'POST':
-        formulario = CustomUserCreationForm(data=request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            user = authenticate(username=formulario.cleaned_data["username"], password=formulario.cleaned_data["password1"])
-            login(request, user)
-            messages.sucess(request,"Resgistro Guardado")
-            return redirect(to="home")  
-        data["form"] = formulario
-    return render(request, 'registration/registro.html',data)
-
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])
 def usuario_create(request):

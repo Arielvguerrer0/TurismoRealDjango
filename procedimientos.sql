@@ -107,41 +107,6 @@ BEGIN
     OPEN departamento for SELECT * FROM departamento;
 END;
 
-create or replace NONEDITIONABLE PROCEDURE sp_modificar_departamento(id number,
-    v_nom_depto varchar2,
-    v_desc_depto varchar2,
-    v_direccion VARCHAR2,
-    v_cant_habitacion NUMBER,
-    v_cant_banio NUMBER,
-    v_CALEFACCION VARCHAR2,
-    v_INTERNET VARCHAR2,
-    v_AMOBLADO VARCHAR2,
-    v_TELEVISION VARCHAR2,
-    v_DISPONIBLE VARCHAR2,
-    v_VALOR_DIA NUMBER,
-    V_COMUNA_ID_COMUNA NUMBER,    
-    salida out number)
-AS 
-BEGIN 
-UPDATE departamento SET 
-    nom_depto = v_nom_depto,
-    desc_depto = v_desc_depto,
-    direccion = v_direccion,
-    cant_habitacion = v_cant_habitacion,
-    cant_banio = v_cant_banio,
-    CALEFACCION = v_CALEFACCION,
-    INTERNET = v_INTERNET,
-    AMOBLADO = v_AMOBLADO,
-    TELEVISION = v_TELEVISION,
-    DISPONIBLE = v_DISPONIBLE,
-    VALOR_DIA = v_VALOR_DIA,
-    comuna_id_comuna = v_comuna_id_comuna
-    WHERE id_departamento = id;
-salida:= 1;
-EXCEPTION
-    WHEN OTHERS THEN
-        salida := 0;
-END;
 
 ------------------Buscar Departamentos----------------------------
 create or replace NONEDITIONABLE PROCEDURE sp_buscar_departamento(id number,departamento out SYS_REFCURSOR)
@@ -249,7 +214,16 @@ BEGIN
     OPEN usuario for SELECT * FROM usuario WHERE id_usuario = id;
 END;
 
-create or replace NONEDITIONABLE PROCEDURE sp_crear_usuario(ID NUMBER,v_nom_usuario VARCHAR, v_correo_usuario VARCHAR, v_contrasenia VARCHAR, v_estado_usuario CHAR, v_tipo_usuario_id_tipo_usuario NUMBER, respuesta out number)
+----------------Listar Usuarios----------------------------
+create or replace NONEDITIONABLE PROCEDURE sp_listar_usuario(usuario out SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN usuario for SELECT * FROM usuario where ESTADO_USUARIO = 1;
+END;
+
+
+-----------------Modificar Usuarios------------------------
+create or replace NONEDITIONABLE PROCEDURE sp_modificar_usuario(ID NUMBER,v_nom_usuario VARCHAR, v_correo_usuario VARCHAR, v_contrasenia VARCHAR, v_estado_usuario CHAR, v_tipo_usuario_id_tipo_usuario NUMBER, respuesta out number)
 IS
 BEGIN
     update usuario set nom_usuario = v_nom_usuario,
@@ -263,6 +237,7 @@ EXCEPTION
     WHEN OTHERS THEN
         respuesta := 0;
 END;
+
 
 --------------------------------------------------------------------------------------------
 
@@ -637,3 +612,17 @@ insert into COMUNA (ID_COMUNA,NOM_COMUNA, REGION_ID_REGION) values (343,'Primave
 insert into COMUNA (ID_COMUNA,NOM_COMUNA, REGION_ID_REGION) values (344,'Timaukel',16);
 insert into COMUNA (ID_COMUNA,NOM_COMUNA, REGION_ID_REGION) values (345,'Cabo de Hornos',16);
 insert into COMUNA (ID_COMUNA,NOM_COMUNA, REGION_ID_REGION) values (346,'Antártica',16);
+
+
+--------------------------------------
+Eliminar ID del usuario en tabla Tipo_Usuario
+
+Eliminar Check in id chek in de la tabla Reserva
+--------------------------------------
+
+Tipo de usuario Create
+
+insert into TIPO_USUARIO (ID_TIPO_USUARIO,TIPO_USUARIO) values (1,'Administrador');
+insert into TIPO_USUARIO (ID_TIPO_USUARIO,TIPO_USUARIO) values (2,'Funcionario');
+insert into TIPO_USUARIO (ID_TIPO_USUARIO,TIPO_USUARIO) values (3,'Cliente');
+

@@ -25,16 +25,14 @@ router.register('Vehiculo', VehiculoViewset),
 
 urlpatterns = [
     path('', home, name="home"),
-    path('ciudad/', listar_ciudad, name="listar_ciudad"),
     path('api/', include(router.urls)),
-    path('registro/', registro, name="registro"),
     path('departamento/', departamento_list),
     path('departamento/<id>', departamento_list_id),
     path('departamento/crear/', departamento_create),
     path('departamento/modificar/<id>', departamento_modify),
     path('departamento/eliminar/<id>', departamento_delete),
-    path('region/', region),
     #Usuarios
+    path('usuario/', usuario_list),
     path('usuario/crear/', usuario_create),
     path('usuario/<id>', get_usuario),
     path('usuario/modificar/<id>', modificar_usuario),
