@@ -626,3 +626,11 @@ insert into TIPO_USUARIO (ID_TIPO_USUARIO,TIPO_USUARIO) values (1,'Administrador
 insert into TIPO_USUARIO (ID_TIPO_USUARIO,TIPO_USUARIO) values (2,'Funcionario');
 insert into TIPO_USUARIO (ID_TIPO_USUARIO,TIPO_USUARIO) values (3,'Cliente');
 
+-----------------------------------------------
+
+TOUR Create
+
+insert into TOUR (ID_TOUR,NOM_TOUR,DESC_TOUR,VALOR_TOUR) values (1,'Laguna Verde','En esta excursión privada disfrutaras de un relajante día en Laguna Verde, una de las principales localidades turísticas de la región de Valparaíso. Recorrerás esta zona de la costa chilena con un guía en exclusiva, solo para ti y tu grupo.',30000);
+insert into TOUR (ID_TOUR,NOM_TOUR,DESC_TOUR,VALOR_TOUR) values (2,'Volcan Villarica','¡Atrévete a escalar el cráter del volcán más activo de Chile y Sudamérica! El Volcán Villarrica, con 2.847 MSNM es conocido como el Rucapillán en Mapudungún, que literalmente significa “casa del espíritu”. Desde lo alto del Volcán!',50000);
+insert into TOUR (ID_TOUR,NOM_TOUR,DESC_TOUR,VALOR_TOUR) values (3,'Valle del Elqui','El Tour Valle del Elqui desde La Serena dura todo el día, donde conocerás uno de los seis valles transversales de Chile. Descubriremos la magia que esconden sus pueblos, el lazo de Gabriela Mistral con esta tierra y los secretos de elaboración del pisco chileno acompañado de hermosos paisajes.',35000);
+insert into TOUR (ID_TOUR,NOM_TOUR,DESC_TOUR,VALOR_TOUR) values (4,'Puerto varas','Esta aventura te permitirá conocer el activo Volcán Osorno cuya forma asombra por su perfección y los famosos Saltos del Petrohué: ambos relevantes hitos del sur de Chile. Un lago de origen glaciar con un volcán de forma perfecta, son parte de los atractivos que ofrece esta experiencia.',60000);

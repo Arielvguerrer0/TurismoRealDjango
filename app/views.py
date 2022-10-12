@@ -191,9 +191,9 @@ def departamento_modify(request, id):
         else:
             return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)            
 
-@api_view(['POST'])
+@api_view(['DELETE'])
 def departamento_delete(request, id):
-    if request.method == 'POST':
+    if request.method == 'DELETE':
         get_departamento = buscar_departamento(id)
         if(get_departamento == []):
             ##Revisar que cuando no se encuentre id deberia enviar mensaje de error.
