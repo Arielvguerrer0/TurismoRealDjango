@@ -1,6 +1,7 @@
 import cx_Oracle 
 from django.db import connection
 
+## Departamentos
 def listar_departamento():
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -65,6 +66,17 @@ def listar_usuario():
         lista.append(fila)
     return lista
 
+def listar_usuario_admin():
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()    
+    cursor.callproc("SP_LISTAR_USUARIO_ADMIN",[out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
 
 def crear_usuario(NOM_USUARIO,CORREO_USUARIO, CONTRASENIA, ESTADO_USUARIO, TIPO_USUARIO_ID_TIPO_USUARIO):
     django_cursor = connection.cursor()
@@ -90,3 +102,15 @@ def modificar_usuario(ID,NOM_USUARIO,CORREO_USUARIO, CONTRASENIA, ESTADO_USUARIO
     salida = cursor.var(cx_Oracle.NUMBER)
     cursor.callproc("SP_MODIFICAR_USUARIO", [ID,NOM_USUARIO,CORREO_USUARIO, CONTRASENIA, ESTADO_USUARIO, TIPO_USUARIO_ID_TIPO_USUARIO, salida])
     return salida.getvalue()
+
+## Reservas
+def listar_reserva():
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()    
+    cursor.callproc("SP_LISTAR_RESERVA",[out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista

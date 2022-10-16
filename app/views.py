@@ -124,17 +124,18 @@ def departamento_list_id(request,id):
             for depa in get_departamento:
                 res = {}
                 res['ID_DEPTO'] = depa[0]
-                res['NOMBRE_DEP'] = depa[1]
-                res['DIRECCION_DEPTO'] = depa[2]
-                res['DESCRIPCION_DEPTO'] = depa[3]
-                res['HABITACION'] = depa[4]
-                res['BANIO'] = depa[5]
+                res['NOM_DEPTO'] = depa[1]
+                res['DESC_DEPTO'] = depa[2]
+                res['DIRECCION'] = depa[3]
+                res['CANT_HABITACION'] = depa[4]
+                res['CANT_BANIO'] = depa[5]
                 res['CALEFACCION'] = depa[6]
                 res['INTERNET'] = depa[7]
                 res['AMOBLADO'] = depa[8]
-                res['TELEVICION'] = depa[9]
-                res['VALOR_DIARIO'] = depa[10]
-                res['DISPONIBLE'] = depa[11]
+                res['TELEVISION'] = depa[9]
+                res['DISPONIBLE'] = depa[10]
+                res['VALOR_DIA'] = depa[11]
+                res['COMUNA_ID_COMUNA'] = depa[12]
                 departamentos.append(res)
             return Response(departamentos, status=status.HTTP_200_OK)
         elif(get_departamento == []):
@@ -194,7 +195,7 @@ def departamento_modify(request, id):
 @api_view(['DELETE'])
 def departamento_delete(request, id):
     if request.method == 'DELETE':
-        get_departamento = buscar_departamento(id)
+        get_departamento = eliminar_departamento(id)
         if(get_departamento == []):
             ##Revisar que cuando no se encuentre id deberia enviar mensaje de error.
             return  Response({'response':'No existe departamento con ese ID'}, status=status.HTTP_404_NOT_FOUND)
@@ -217,6 +218,26 @@ def usuario_list(request):
                 res['NOM_USUARIO'] = usuario[0]
                 res['CORREO_USUARIO'] = usuario[1]
                 res['TIPO_USUARIO'] = usuario[2]
+                usuarios.append(res)
+            return Response(usuarios, status=status.HTTP_200_OK)
+        elif(get_usuario == []):
+            return Response({"Error": "No se encontraron usuarios"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET', 'POST'])
+def usuario_list_admin(request):
+    if request.method == 'GET':
+        get_usuario = listar_usuario_admin()
+        if(get_usuario != []):
+            usuarios = []
+            res = {}
+            for usuario in get_usuario:
+                res = {}
+                res['NOM_USUARIO'] = usuario[0]
+                res['CORREO_USUARIO'] = usuario[1]
+                res['TIPO_USUARIO'] = usuario[2]
+                res['ESTADO_USUARIO'] = usuario[3]
                 usuarios.append(res)
             return Response(usuarios, status=status.HTTP_200_OK)
         elif(get_usuario == []):
@@ -279,3 +300,41 @@ def get_usuario(request,id):
             return Response({"Error": "No existe usuario con ese ID"}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET', 'POST'])
+def reserva_list(request):
+    if request.method == 'GET':
+        get_reserva = listar_reserva()
+        if(get_reserva != []):
+            reservas = []
+            res = {}
+            for reserva in get_reserva:
+                res = {}
+                res['FECHA DE INGRESO'] = reserva[0]
+                res['FECHA DE SALIDA'] = reserva[1]
+                res['DIAS RESERVADOS'] = reserva[2]
+                res['ESTADO'] = reserva[3]
+                res['NOMBRE DEPTO'] = reserva[4]
+                res['NOMBRE USUARIO'] = reserva[5]
+                reservas.append(res)
+            return Response(reservas, status=status.HTTP_200_OK)
+        elif(get_reserva == []):
+            return Response({"Error": "No se encontraron reservas"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+""" @api_view(['POST'])
+def reserva_create(request):
+    if request.method == 'POST':
+        NOM_USUARIO = request.data.get('NOM_USUARIO')
+        CORREO_USUARIO = request.data.get('CORREO_USUARIO')
+        CONTRASENIA = request.data.get('CONTRASENIA')
+        ESTADO_USUARIO = request.data.get('ESTADO_USUARIO')
+        TIPO_USUARIO_ID_TIPO_USUARIO = request.data.get('TIPO_USUARIO_ID_TIPO_USUARIO')
+        
+        salida = crear_usuario(NOM_USUARIO,CORREO_USUARIO,CONTRASENIA,ESTADO_USUARIO,TIPO_USUARIO_ID_TIPO_USUARIO)
+        if salida == 1:
+            return Response({'response':'Se creo correctamente el usuario'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  """

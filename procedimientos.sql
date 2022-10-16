@@ -218,7 +218,19 @@ END;
 create or replace NONEDITIONABLE PROCEDURE sp_listar_usuario(usuario out SYS_REFCURSOR)
 IS
 BEGIN
-    OPEN usuario for SELECT * FROM usuario where ESTADO_USUARIO = 1;
+    OPEN usuario for select u.nom_usuario, u.correo_usuario, tu.tipo_usuario
+    from usuario u, tipo_usuario tu
+    where u.tipo_usuario_id_tipo_usuario = tu.id_tipo_usuario and ESTADO_USUARIO = 1;
+END;
+
+----------------Listar Usuarios Admin----------------------------
+create or replace NONEDITIONABLE PROCEDURE sp_listar_usuario_admin(usuario out SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN usuario for select u.nom_usuario, u.correo_usuario,tu.tipo_usuario,
+    CASE when u.estado_usuario = 1 then 'Habilitado' else 'Deshabilitado' END "ESTADO_USUARIO"
+    from usuario u, tipo_usuario tu
+    where u.tipo_usuario_id_tipo_usuario = tu.id_tipo_usuario;
 END;
 
 
@@ -238,6 +250,30 @@ EXCEPTION
         respuesta := 0;
 END;
 
+-------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------
+
+-----------------Listar Reserva-----------------------
+
+create or replace NONEDITIONABLE PROCEDURE sp_listar_reserva(reserva out SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN reserva for select r.fecha_ingreso "FECHA DE INGRESO", r.fecha_salida "FECHA DE SALIDA",r.cant_dia_reserva "DIAS RESERVADOS", r.estado_reserva "ESTADO", d.nom_depto "NOMBRE DEPTO", u.nom_usuario "NOMBRE USUARIO"
+    from reserva r, departamento d, usuario u  
+    where r.departamento_id_departamento = d.id_departamento and r.usuario_id_usuario = u.id_usuario;
+END;
+
+----------------Crear Reserva----------------------------- (EN DESARROLLO)
+/* create or replace NONEDITIONABLE PROCEDURE sp_crear_reserva(FECHA_INGRESO DATE, FECHA_SALIDA DATE, CANT_DIA_RESERVA NUMBER, ESTADO_RESERVA VARCHAR2, FECHA_ESTADO_RESERVA DATE, 
+DEPARTAMENTO_ID_DEPARTAMENTO NUMBER,USUARIO_ID_USUARIO NUMBER, respuesta out number)
+IS
+BEGIN
+    insert into reserva values (seq_reserva.NEXTVAL, FECHA_INGRESO, FECHA_SALIDA, CANT_DIA_RESERVA, ESTADO_RESERVA, FECHA_ESTADO_RESERVA, DEPARTAMENTO_ID_DEPARTAMENTO, USUARIO_ID_USUARIO);
+    respuesta := 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        respuesta := 0;
+END; */
 
 --------------------------------------------------------------------------------------------
 
