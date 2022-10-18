@@ -208,10 +208,10 @@ END;
 
 
 -----------------Buscar Usuarios-------------------------
-create or replace NONEDITIONABLE PROCEDURE sp_buscar_usuario(id number,usuario out SYS_REFCURSOR)
+create or replace NONEDITIONABLE PROCEDURE sp_buscar_usuario(correo string,usuario out SYS_REFCURSOR)
 IS
 BEGIN
-    OPEN usuario for SELECT * FROM usuario WHERE id_usuario = id;
+    OPEN usuario for SELECT * FROM usuario WHERE correo = correo;
 END;
 
 ----------------Listar Usuarios----------------------------

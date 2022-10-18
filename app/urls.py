@@ -36,7 +36,7 @@ urlpatterns = [
     path('usuario/', usuario_list),
     path('usuarioAdmin/', usuario_list_admin),
     path('usuario/crear/', usuario_create),
-    path('usuario/<id>', get_usuario),
+    path('usuario/<correo>', get_usuario),
     path('usuario/modificar/<id>', modificar_usuario),
    #Reserva
     path('reserva/', reserva_list),

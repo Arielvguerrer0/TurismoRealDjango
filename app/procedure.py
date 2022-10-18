@@ -85,11 +85,12 @@ def crear_usuario(NOM_USUARIO,CORREO_USUARIO, CONTRASENIA, ESTADO_USUARIO, TIPO_
     cursor.callproc("SP_CREAR_USUARIO", [NOM_USUARIO,CORREO_USUARIO, CONTRASENIA, ESTADO_USUARIO, TIPO_USUARIO_ID_TIPO_USUARIO, salida])
     return salida.getvalue()
 
-def buscar_usuario(id):
+def buscar_usuario(correo):
+    print('correo', correo)
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()    
-    cursor.callproc("SP_BUSCAR_USUARIO",[id,out_cur])
+    cursor.callproc("SP_BUSCAR_USUARIO",[correo,out_cur])
 
     lista = []
     for fila in out_cur:

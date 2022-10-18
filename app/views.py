@@ -261,9 +261,9 @@ def usuario_create(request):
             return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
 
 @api_view(['POST'])
-def usuario_modify(request, id):
+def usuario_modify(request, correo):
     if request.method == 'POST':
-        usuario = buscar_usuario(id)
+        usuario = buscar_usuario(correo)
         if(usuario == []):
             return  Response({'response':'No existe usuario con ese ID'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -280,19 +280,22 @@ def usuario_modify(request, id):
             return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
 
 @api_view(['GET'])
-def get_usuario(request,id):
+def get_usuario(request,correo):
+    print('correito', correo)
     if request.method == 'GET':
-        get_usuario = buscar_usuario(id)
+        get_usuario = buscar_usuario(correo)
         if(get_usuario != []):
+            print('USUARIOS', get_usuario)
             usuario = []
             res = {}
             for user in get_usuario:
                 res = {}
-                res['NOM_USUARIO'] = user[0]
-                res['CORREO_USUARIO'] = user[1]
-                res['CONTRASENIA'] = user[2]
-                res['ESTADO_USUARIO'] = user[3]
-                res['TIPO_USUARIO_ID_TIPO_USUARIO'] = user[4]
+                res['ID_USUARIO'] = user[0]
+                res['NOM_USUARIO'] = user[1]
+                res['CORREO_USUARIO'] = user[2]
+                res['CONTRASENIA'] = user[3]
+                res['ESTADO_USUARIO'] = user[4]
+                res['TIPO_USUARIO_ID_TIPO_USUARIO'] = user[5]
                 
                 usuario.append(res)
             return Response(usuario, status=status.HTTP_200_OK)
