@@ -263,8 +263,8 @@ BEGIN
     where r.departamento_id_departamento = d.id_departamento and r.usuario_id_usuario = u.id_usuario;
 END;
 
-----------------Crear Reserva----------------------------- (EN DESARROLLO)
-/* create or replace NONEDITIONABLE PROCEDURE sp_crear_reserva(FECHA_INGRESO DATE, FECHA_SALIDA DATE, CANT_DIA_RESERVA NUMBER, ESTADO_RESERVA VARCHAR2, FECHA_ESTADO_RESERVA DATE, 
+----------------Crear Reserva-----------------------------
+create or replace NONEDITIONABLE PROCEDURE sp_crear_reserva(FECHA_INGRESO DATE, FECHA_SALIDA DATE, CANT_DIA_RESERVA NUMBER, ESTADO_RESERVA VARCHAR2, FECHA_ESTADO_RESERVA DATE, 
 DEPARTAMENTO_ID_DEPARTAMENTO NUMBER,USUARIO_ID_USUARIO NUMBER, respuesta out number)
 IS
 BEGIN
@@ -273,7 +273,13 @@ BEGIN
 EXCEPTION
     WHEN OTHERS THEN
         respuesta := 0;
-END; */
+END;
+
+DROP SEQUENCE seq_reserva;
+create sequence seq_reserva start with 1
+increment by 1
+maxvalue 99999
+minvalue 1;
 
 --------------------------------------------------------------------------------------------
 

@@ -29,6 +29,7 @@ urlpatterns = [
     #Departamentos
     path('departamento/', departamento_list),
     path('departamento/<id>', departamento_list_id),
+    path('departamento/buscar/<nom>', departamento_list_nom),
     path('departamento/crear/', departamento_create),
     path('departamento/modificar/<id>', departamento_modify),
     path('departamento/eliminar/<id>', departamento_delete),
@@ -40,4 +41,5 @@ urlpatterns = [
     path('usuario/modificar/<id>', modificar_usuario),
    #Reserva
     path('reserva/', reserva_list),
+    path('reserva/crear', reserva_create),
 ]

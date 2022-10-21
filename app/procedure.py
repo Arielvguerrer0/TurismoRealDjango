@@ -24,6 +24,18 @@ def buscar_departamento(id):
         lista.append(fila)
     return lista
 
+def buscar_departamento_nombre(nom):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()    
+    cursor.callproc("SP_BUSCAR_DEPARTAMENTO_NOMBRE",[nom,out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
+
 def crear_departamento(nombre_dep,descripcion_depto,direccion_depto,habitacion,banio,calefaccion,internet,amoblado,television,disponible,valor_diario,comuna_id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -115,3 +127,10 @@ def listar_reserva():
     for fila in out_cur:
         lista.append(fila)
     return lista
+
+def crear_reserva(FECHA_INGRESO,FECHA_SALIDA,CANT_DIA_RESERVA,ESTADO_RESERVA,FECHA_ESTADO_RESERVA,DEPARTAMENTO_ID_DEPARTAMENTO,USUARIO_ID_USUARIO):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("SP_CREAR_RESERVA", [FECHA_INGRESO,FECHA_SALIDA,CANT_DIA_RESERVA,ESTADO_RESERVA,FECHA_ESTADO_RESERVA,DEPARTAMENTO_ID_DEPARTAMENTO,USUARIO_ID_USUARIO, salida])
+    return salida.getvalue()

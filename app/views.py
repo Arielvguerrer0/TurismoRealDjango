@@ -143,6 +143,38 @@ def departamento_list_id(request,id):
         else:
             return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['GET'])
+def departamento_list_nom(request,nom):
+    print (request.method)
+    print (nom)
+    if request.method == 'GET':
+        nombre_dep = buscar_departamento_nombre(nom)
+        print (nombre_dep)
+        if(nombre_dep != []):
+            departamentos = []
+            res = {}
+            for depa in nombre_dep:
+                res = {}
+                res['ID_DEPTO'] = depa[0]
+                res['NOM_DEPTO'] = depa[1]
+                res['DESC_DEPTO'] = depa[2]
+                res['DIRECCION'] = depa[3]
+                res['CANT_HABITACION'] = depa[4]
+                res['CANT_BANIO'] = depa[5]
+                res['CALEFACCION'] = depa[6]
+                res['INTERNET'] = depa[7]
+                res['AMOBLADO'] = depa[8]
+                res['TELEVISION'] = depa[9]
+                res['DISPONIBLE'] = depa[10]
+                res['VALOR_DIA'] = depa[11]
+                res['COMUNA_ID_COMUNA'] = depa[12]
+                departamentos.append(res)
+            return Response(departamentos, status=status.HTTP_200_OK)
+        elif(nombre_dep == []):
+            return Response({"Error": "No se existen departamentos con ese Nombre"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 @api_view(['POST'])
 def departamento_create(request):
     if request.method == 'POST':
@@ -253,6 +285,7 @@ def usuario_create(request):
         CONTRASENIA = request.data.get('CONTRASENIA')
         ESTADO_USUARIO = request.data.get('ESTADO_USUARIO')
         TIPO_USUARIO_ID_TIPO_USUARIO = request.data.get('TIPO_USUARIO_ID_TIPO_USUARIO')
+        print(NOM_USUARIO)
         
         salida = crear_usuario(NOM_USUARIO,CORREO_USUARIO,CONTRASENIA,ESTADO_USUARIO,TIPO_USUARIO_ID_TIPO_USUARIO)
         if salida == 1:
@@ -300,7 +333,7 @@ def get_usuario(request,correo):
                 usuario.append(res)
             return Response(usuario, status=status.HTTP_200_OK)
         elif(get_usuario == []):
-            return Response({"Error": "No existe usuario con ese ID"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"Error": "No existe usuario con ese correo"}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -327,17 +360,20 @@ def reserva_list(request):
         else:
             return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-""" @api_view(['POST'])
+@api_view(['POST'])
 def reserva_create(request):
     if request.method == 'POST':
-        NOM_USUARIO = request.data.get('NOM_USUARIO')
-        CORREO_USUARIO = request.data.get('CORREO_USUARIO')
-        CONTRASENIA = request.data.get('CONTRASENIA')
-        ESTADO_USUARIO = request.data.get('ESTADO_USUARIO')
-        TIPO_USUARIO_ID_TIPO_USUARIO = request.data.get('TIPO_USUARIO_ID_TIPO_USUARIO')
+        FECHA_INGRESO = request.data.get('FECHA_INGRESO')
+        FECHA_SALIDA = request.data.get('FECHA_SALIDA')
+        CANT_DIA_RESERVA = request.data.get('CANT_DIA_RESERVA')
+        ESTADO_RESERVA = request.data.get('ESTADO_RESERVA')
+        FECHA_ESTADO_RESERVA = request.data.get('FECHA_ESTADO_RESERVA')
+        DEPARTAMENTO_ID_DEPARTAMENTO = request.data.get('DEPARTAMENTO_ID_DEPARTAMENTO')
+        USUARIO_ID_USUARIO = request.data.get('USUARIO_ID_USUARIO')
         
-        salida = crear_usuario(NOM_USUARIO,CORREO_USUARIO,CONTRASENIA,ESTADO_USUARIO,TIPO_USUARIO_ID_TIPO_USUARIO)
+        salida = crear_reserva(FECHA_INGRESO,FECHA_SALIDA,CANT_DIA_RESERVA,ESTADO_RESERVA,FECHA_ESTADO_RESERVA,DEPARTAMENTO_ID_DEPARTAMENTO,USUARIO_ID_USUARIO)
         if salida == 1:
-            return Response({'response':'Se creo correctamente el usuario'}, status=status.HTTP_201_CREATED)
+            return Response({'response':'Se creo correctamente la reserva'}, status=status.HTTP_201_CREATED)
         else:
-            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  """
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
