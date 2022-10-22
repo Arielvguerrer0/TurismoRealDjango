@@ -244,9 +244,12 @@ def usuario_list(request):
             res = {}
             for usuario in get_usuario:
                 res = {}
-                res['NOM_USUARIO'] = usuario[0]
-                res['CORREO_USUARIO'] = usuario[1]
-                res['TIPO_USUARIO'] = usuario[2]
+                res['ID_USUARIO'] = usuario[0]
+                res['NOM_USUARIO'] = usuario[1]
+                res['CORREO_USUARIO'] = usuario[2]
+                res['CONTRASENIA'] = usuario[3]
+                res['ESTADO_USUARIO'] = usuario[4]
+                res['TIPO_USUARIO_ID_TIPO_USUARIO'] = usuario[5]
                 usuarios.append(res)
             return Response(usuarios, status=status.HTTP_200_OK)
         elif(get_usuario == []):
