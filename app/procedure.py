@@ -108,6 +108,17 @@ def buscar_usuario(id):
         lista.append(fila)
     return lista
 
+def buscar_usuario_correo(correo):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("SP_BUSCAR_USUARIO_CORREO",[correo,out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
 def modificar_usuario(ID,NOM_USUARIO,CORREO_USUARIO, CONTRASENIA, ESTADO_USUARIO, TIPO_USUARIO_ID_TIPO_USUARIO):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
