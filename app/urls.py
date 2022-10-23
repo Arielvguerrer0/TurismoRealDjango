@@ -43,4 +43,7 @@ urlpatterns = [
    #Reserva
     path('reserva/', reserva_list),
     path('reserva/crear', reserva_create),
+    path('reserva/<id>', get_reserva),
+    path('reserva/modificar/<id>', reserva_modify),
+    path('reserva/eliminar/<id>', reserva_delete),
 ]

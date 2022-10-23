@@ -398,3 +398,61 @@ def reserva_create(request):
         else:
             return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['GET'])
+def get_reserva(request,id):
+    if request.method == 'GET':
+        get_reserva = buscar_reserva(id)
+        if(get_reserva != []):
+            reservas = []
+            res = {}
+            for reserva in get_reserva:
+                res = {}
+                res['ID_RESERVA'] = reserva[0]
+                res['FECHA_INGRESO'] = reserva[1]
+                res['FECHA_SALIDA'] = reserva[2]
+                res['CANT_DIA_RESERVA'] = reserva[3]
+                res['ESTADO_RESERVA'] = reserva[4]
+                res['FECHA_ESTADO_RESERVA'] = reserva[5]
+                res['DEPARTAMENTO_ID_DEPARTAMENTO'] = reserva[6]
+                res['USUARIO_ID_USUARIO'] = reserva[7]
+                reservas.append(res)
+            return Response(reservas, status=status.HTTP_200_OK)
+        elif(get_reserva == []):
+            return Response({"Error": "No existe reserva con ese ID"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def reserva_modify(request, id):
+    if request.method == 'POST':
+        reserva = buscar_reserva(id)
+        if(reserva == []):
+            return  Response({'response':'No existe reserva con ese ID'}, status=status.HTTP_404_NOT_FOUND)
+
+        FECHA_INGRESO = request.data.get('FECHA_INGRESO')
+        FECHA_SALIDA = request.data.get('FECHA_SALIDA')
+        CANT_DIA_RESERVA = request.data.get('CANT_DIA_RESERVA')
+        ESTADO_RESERVA = request.data.get('ESTADO_RESERVA')
+        FECHA_ESTADO_RESERVA = request.data.get('FECHA_ESTADO_RESERVA')
+        DEPARTAMENTO_ID_DEPARTAMENTO = request.data.get('DEPARTAMENTO_ID_DEPARTAMENTO')
+        USUARIO_ID_USUARIO = request.data.get('USUARIO_ID_USUARIO')
+        
+        salida = modificar_reserva(id,FECHA_INGRESO,FECHA_SALIDA,CANT_DIA_RESERVA,ESTADO_RESERVA,FECHA_ESTADO_RESERVA,DEPARTAMENTO_ID_DEPARTAMENTO,USUARIO_ID_USUARIO)
+        if salida == 1:
+            return Response({'response':'Se modifico correctamente la reserva'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['DELETE'])
+def reserva_delete(request, id):
+    if request.method == 'DELETE':
+        get_reserva = eliminar_reserva(id)
+        if(get_reserva == []):
+            ##Revisar que cuando no se encuentre id deberia enviar mensaje de error.
+            return  Response({'response':'No existe reserva con ese ID'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            salida = eliminar_reserva(id)
+    if salida == 1:
+        return Response({'response':'Se eliminó correctamente la reserva'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
