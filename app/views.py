@@ -123,11 +123,11 @@ def departamento_list_admin(request):
             res = {}
             for depa in get_departamento:
                 res = {}
-                res['NOMBRE DEPARTAMENTO '] = depa[0]
-                res['DESCRIPCIÓN'] = depa[1]
+                res['NOMBRE_DEPARTAMENTO'] = depa[0]
+                res['DESCRIPCION'] = depa[1]
                 res['DIRECCION'] = depa[2]
                 res['HABITACIONES'] = depa[3]
-                res['CANTIDAD BAÑOS'] = depa[4]
+                res['CANTIDAD_BAÑOS'] = depa[4]
                 res['CALEFACCION'] = depa[5]
                 res['INTERNET'] = depa[6]
                 res['AMOBLADO'] = depa[7]
@@ -403,6 +403,30 @@ def reserva_list(request):
                 res['ESTADO'] = reserva[3]
                 res['NOMBRE DEPTO'] = reserva[4]
                 res['NOMBRE USUARIO'] = reserva[5]
+                reservas.append(res)
+            return Response(reservas, status=status.HTTP_200_OK)
+        elif(get_reserva == []):
+            return Response({"Error": "No se encontraron reservas"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET', 'POST'])            
+def reserva_bruto(request):
+    if request.method == 'GET':
+        get_reserva = listar_reserva_bruto()
+        if(get_reserva != []):
+            reservas = []
+            res = {}
+            for reserva in get_reserva:
+                res = {}
+                res['ID_RESERVA'] = reserva[0]
+                res['FECHA_INGRESO'] = reserva[1]
+                res['FECHA_SALIDA'] = reserva[2]
+                res['CANT_DIA_RESERVA'] = reserva[3]
+                res['ESTADO_RESERVA'] = reserva[4]
+                res['FECHA_ESTADO_RESERVA '] = reserva[5]
+                res['DEPARTAMENTO_ID_DEPARTAMENTO'] = reserva[6]
+                res['USUARIO_ID_USUAIRO'] = reserva[7]
                 reservas.append(res)
             return Response(reservas, status=status.HTTP_200_OK)
         elif(get_reserva == []):
