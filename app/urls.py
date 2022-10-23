@@ -28,6 +28,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     #Departamentos
     path('departamento/', departamento_list),
+    path('departamentoAdmin/', departamento_list_admin),
     path('departamento/<id>', departamento_list_id),
     path('departamento/buscar/<nom>', departamento_list_nom),
     path('departamento/crear/', departamento_create),
