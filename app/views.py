@@ -114,6 +114,35 @@ def departamento_list(request):
         else:
             return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['GET', 'POST'])
+def departamento_list_admin(request):
+    if request.method == 'GET':
+        get_departamento = listar_departamento_admin()
+        if(get_departamento != []):
+            departamentos = []
+            res = {}
+            for depa in get_departamento:
+                res = {}
+                res['NOMBRE DEPARTAMENTO '] = depa[0]
+                res['DESCRIPCIÓN'] = depa[1]
+                res['DIRECCION'] = depa[2]
+                res['HABITACIONES'] = depa[3]
+                res['CANTIDAD BAÑOS'] = depa[4]
+                res['CALEFACCION'] = depa[5]
+                res['INTERNET'] = depa[6]
+                res['AMOBLADO'] = depa[7]
+                res['TELEVISION'] = depa[8]
+                res['DISPONIBLE'] = depa[9]
+                res['VALOR'] = depa[10]
+                res['COMUNA'] = depa[11]
+
+                departamentos.append(res)
+            return Response(departamentos, status=status.HTTP_200_OK)
+        elif(get_departamento == []):
+            return Response({"Error": "No se encontraron departamentos"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 @api_view(['GET'])
 def departamento_list_id(request,id):
     if request.method == 'GET':

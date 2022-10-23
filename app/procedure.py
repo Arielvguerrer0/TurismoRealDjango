@@ -13,6 +13,17 @@ def listar_departamento():
         lista.append(fila)
     return lista
 
+def listar_departamento_admin():
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()    
+    cursor.callproc("sp_listar_departamento_admin",[out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
 def buscar_departamento(id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
