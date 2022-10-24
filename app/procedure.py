@@ -181,3 +181,33 @@ def eliminar_reserva(id):
     salida = cursor.var(cx_Oracle.NUMBER)
     cursor.callproc("SP_ELIMINAR_RESERVA", [id,salida])
     return salida.getvalue()
+
+#Mantenimiento Departamento
+def listar_mttoDepartamento():
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()    
+    cursor.callproc("SP_LISTAR_MTTODEPARTAMENTO",[out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
+def crear_mttoDepartamento(FECHA_INGRESO,FECHA_SALIDA,DESCRIPCION_MTTO,DISPONIBILIDAD,DEPARTAMENTO_ID_DEPARTAMENTO):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("SP_CREAR_MTTODEPARTAMENTO", [FECHA_INGRESO,FECHA_SALIDA,DESCRIPCION_MTTO,DISPONIBILIDAD,DEPARTAMENTO_ID_DEPARTAMENTO, salida])
+    return salida.getvalue()
+
+def buscar_mttoDepartamento(id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("SP_BUSCAR_MTTODEPARTAMENTO",[id,out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
