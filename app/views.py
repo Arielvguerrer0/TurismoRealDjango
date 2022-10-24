@@ -509,3 +509,64 @@ def reserva_delete(request, id):
         return Response({'response':'Se eliminó correctamente la reserva'}, status=status.HTTP_200_OK)
     else:
         return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+#Mantenimiento Departamento
+@api_view(['GET', 'POST'])            
+def mttoDepartamento_list(request):
+    if request.method == 'GET':
+        get_mttoDepartamento = listar_mttoDepartamento()
+        if(get_mttoDepartamento != []):
+            mttoDepartamento = []
+            res = {}
+            for mttoDepto in get_mttoDepartamento:
+                res = {}
+                res['ID_MTTO'] = mttoDepto[0]
+                res['FECHA_INGRESO'] = mttoDepto[1]
+                res['FECHA_SALIDA'] = mttoDepto[2]
+                res['DESCRIPCION_MTTO'] = mttoDepto[3]
+                res['DISPONIBILIDAD'] = mttoDepto[4]
+                res['DEPARTAMENTO_ID_DEPARTAMENTO '] = mttoDepto[5]
+                mttoDepartamento.append(res)
+            return Response(mttoDepartamento, status=status.HTTP_200_OK)
+        elif(get_mttoDepartamento == []):
+            return Response({"Error": "No se encontraron mantenciones"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def mttoDepartamento_create(request):
+    if request.method == 'POST':
+        FECHA_INGRESO = request.data.get('FECHA_INGRESO')
+        FECHA_SALIDA = request.data.get('FECHA_SALIDA')
+        DESCRIPCION_MTTO = request.data.get('DESCRIPCION_MTTO')
+        DISPONIBILIDAD = request.data.get('DISPONIBILIDAD')
+        DEPARTAMENTO_ID_DEPARTAMENTO = request.data.get('DEPARTAMENTO_ID_DEPARTAMENTO')
+        
+        salida = crear_mttoDepartamento(FECHA_INGRESO,FECHA_SALIDA,DESCRIPCION_MTTO,DISPONIBILIDAD,DEPARTAMENTO_ID_DEPARTAMENTO)
+        if salida == 1:
+            return Response({'response':'Se creo correctamente el mantenimiento'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_mttoDepartamento(request,id):
+    if request.method == 'GET':
+        get_mttoDepartamento = buscar_mttoDepartamento(id)
+        if(get_mttoDepartamento != []):
+            mttoDepartamento = []
+            res = {}
+            for mttoDepto in get_mttoDepartamento:
+                res = {}
+                res['ID_MTTO'] = mttoDepto[0]
+                res['FECHA_INGRESO'] = mttoDepto[1]
+                res['FECHA_SALIDA'] = mttoDepto[2]
+                res['DESCRIPCION_MTTO'] = mttoDepto[3]
+                res['DISPONIBILIDAD'] = mttoDepto[4]
+                res['DEPARTAMENTO_ID_DEPARTAMENTO'] = mttoDepto[5]
+
+                mttoDepartamento.append(res)
+            return Response(mttoDepartamento, status=status.HTTP_200_OK)
+        elif(get_mttoDepartamento == []):
+            return Response({"Error": "No existe usuario con ese ID"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
