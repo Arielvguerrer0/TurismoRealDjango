@@ -1,5 +1,5 @@
 --------------------------------------------------------
--- Archivo creado  - domingo-octubre-23-2022   
+-- Archivo creado  - lunes-octubre-24-2022   
 --------------------------------------------------------
 --------------------------------------------------------
 --  DDL for Procedure SP_BUSCAR_DEPARTAMENTO
@@ -22,6 +22,18 @@ set define off;
 IS
 BEGIN
     OPEN departamento for SELECT * FROM departamento where nom_depto LIKE '%'+ nom + '%';
+END;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure SP_BUSCAR_MTTODEPARTAMENTO
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_BUSCAR_MTTODEPARTAMENTO" (id number,mtto_departamento out SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN mtto_departamento for SELECT * FROM mtto_departamento WHERE id_mtto = id;
 END;
 
 /
@@ -91,6 +103,22 @@ END;
 
 /
 --------------------------------------------------------
+--  DDL for Procedure SP_CREAR_MTTODEPARTAMENTO
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_CREAR_MTTODEPARTAMENTO" (FECHA_INGRESO DATE, FECHA_SALIDA DATE, DESCRIPCION_MTTO VARCHAR, DISPONIBILIDAD VARCHAR, DEPARTAMENTO_ID_DEPARTAMENTO NUMBER, respuesta out number)
+IS
+BEGIN
+    insert into mtto_departamento values (seq_mtto_departamento.NEXTVAL,FECHA_INGRESO,FECHA_SALIDA,DESCRIPCION_MTTO,DISPONIBILIDAD,DEPARTAMENTO_ID_DEPARTAMENTO);
+    respuesta := 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        respuesta := 0;
+END;
+
+/
+--------------------------------------------------------
 --  DDL for Procedure SP_CREAR_RESERVA
 --------------------------------------------------------
 set define off;
@@ -144,6 +172,26 @@ END;
 
 /
 --------------------------------------------------------
+--  DDL for Procedure SP_ELIMINAR_MTTODEPARTAMENTO
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_ELIMINAR_MTTODEPARTAMENTO" (id number,salida out number)
+IS
+BEGIN
+DELETE
+FROM
+    mtto_departamento
+WHERE
+    id_mtto = id;
+    salida:= 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        salida := 0;
+END;
+
+/
+--------------------------------------------------------
 --  DDL for Procedure SP_ELIMINAR_RESERVA
 --------------------------------------------------------
 set define off;
@@ -183,10 +231,22 @@ set define off;
   CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_LISTAR_DEPARTAMENTO_ADMIN" (departamento out SYS_REFCURSOR)
 IS
 BEGIN
-    OPEN departamento for select d.nom_depto as "NOMBRE DEPARTAMENTO", d.desc_depto as "DESCRIPCIÃ“N", d.direccion, d.cant_habitacion as "HABITACIONES", d.cant_banio as "CANTIDAD BAÃ‘OS", d.calefaccion, d.internet, 
+    OPEN departamento for select d.nom_depto as "NOMBRE DEPARTAMENTO", d.desc_depto as "DESCRIPCIÓN", d.direccion, d.cant_habitacion as "HABITACIONES", d.cant_banio as "CANTIDAD BAÑOS", d.calefaccion, d.internet, 
     d.amoblado, d.television, d.disponible, d.valor_dia as "VALOR", c.nom_comuna as "COMUNA"
     from departamento d, comuna c
     where d.comuna_id_comuna = c.id_comuna;
+END;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure SP_LISTAR_MTTODEPARTAMENTO
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_LISTAR_MTTODEPARTAMENTO" (mtto_departamento out SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN mtto_departamento for SELECT * FROM mtto_departamento;
 END;
 
 /
@@ -270,6 +330,35 @@ salida:= 1;
 EXCEPTION
     WHEN OTHERS THEN
         salida := 0;
+END;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure SP_MODIFICAR_MTTODEPARTAMENTO
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_MODIFICAR_MTTODEPARTAMENTO" (id NUMBER,
+v_fecha_ingreso DATE, 
+v_fecha_salida DATE, 
+v_descripcion_mtto VARCHAR2, 
+v_disponibilidad VARCHAR2,
+v_departamento_id_departamento NUMBER, 
+
+respuesta out number)
+IS
+BEGIN
+    update mtto_departamento set 
+    FECHA_INGRESO = v_fecha_ingreso,
+    FECHA_SALIDA = v_fecha_salida,
+    DESCRIPCION_MTTO = v_descripcion_mtto,
+    DISPONIBILIDAD = v_disponibilidad,
+    DEPARTAMENTO_ID_DEPARTAMENTO = v_departamento_id_departamento
+    WHERE id_mtto = id;
+    respuesta := 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        respuesta := 0;
 END;
 
 /
