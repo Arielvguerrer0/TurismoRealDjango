@@ -211,3 +211,17 @@ def buscar_mttoDepartamento(id):
     for fila in out_cur:
         lista.append(fila)
     return lista
+
+def modificar_mttoDepartamento(ID,FECHA_INGRESO,FECHA_SALIDA,DESCRIPCION_MTTO,DISPONIBILIDAD,DEPARTAMENTO_ID_DEPARTAMENTO):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("sp_modificar_mttoDepartamento", [ID,FECHA_INGRESO,FECHA_SALIDA,DESCRIPCION_MTTO,DISPONIBILIDAD,DEPARTAMENTO_ID_DEPARTAMENTO, salida])
+    return salida.getvalue()
+
+def eliminar_mttoDepartamento(id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("SP_ELIMINAR_mttoDepartamento", [id,salida])
+    return salida.getvalue()

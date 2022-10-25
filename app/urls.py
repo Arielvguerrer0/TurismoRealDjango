@@ -52,4 +52,6 @@ urlpatterns = [
     path('mttoDepartamento/', mttoDepartamento_list),
     path('mttoDepartamento/crear/', mttoDepartamento_create),
     path('mttoDepartamento/<id>', get_mttoDepartamento),
+    path('mttoDepartamento/modificar/<id>', mttoDepartamento_modify),
+    path('mttoDepartamento/eliminar/<id>', mttoDepartamento_delete),
 ]

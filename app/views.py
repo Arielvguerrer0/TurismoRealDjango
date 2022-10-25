@@ -567,6 +567,39 @@ def get_mttoDepartamento(request,id):
                 mttoDepartamento.append(res)
             return Response(mttoDepartamento, status=status.HTTP_200_OK)
         elif(get_mttoDepartamento == []):
-            return Response({"Error": "No existe usuario con ese ID"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"Error": "No existen mantenimientos con ese ID"}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def mttoDepartamento_modify(request, id):
+    if request.method == 'POST':
+        get_mttoDepartamento = buscar_mttoDepartamento(id)
+        if(get_mttoDepartamento == []):
+            return  Response({'response':'No existe un mantenimiento con ese ID'}, status=status.HTTP_404_NOT_FOUND)
+
+        FECHA_INGRESO = request.data.get('FECHA_INGRESO')
+        FECHA_SALIDA = request.data.get('FECHA_SALIDA')
+        DESCRIPCION_MTTO = request.data.get('DESCRIPCION_MTTO')
+        DISPONIBILIDAD = request.data.get('DISPONIBILIDAD')
+        DEPARTAMENTO_ID_DEPARTAMENTO = request.data.get('DEPARTAMENTO_ID_DEPARTAMENTO')
+        
+        salida = modificar_mttoDepartamento(id,FECHA_INGRESO,FECHA_SALIDA,DESCRIPCION_MTTO,DISPONIBILIDAD,DEPARTAMENTO_ID_DEPARTAMENTO)
+        if salida == 1:
+            return Response({'response':'Se modifico correctamente el mantenimiento'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['DELETE'])
+def mttoDepartamento_delete(request, id):
+    if request.method == 'DELETE':
+        get_mttoDepartamento = eliminar_mttoDepartamento(id)
+        if(get_mttoDepartamento == []):
+            ##Revisar que cuando no se encuentre id deberia enviar mensaje de error.
+            return  Response({'response':'No existe mantenciones con ese ID'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            salida = eliminar_mttoDepartamento(id)
+    if salida == 1:
+        return Response({'response':'Se eliminó correctamente la mantencion'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
