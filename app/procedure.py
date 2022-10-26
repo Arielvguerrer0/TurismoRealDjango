@@ -255,3 +255,10 @@ def buscar_cliente(id):
     for fila in out_cur:
         lista.append(fila)
     return lista
+
+def modificar_cliente(ID,RUT_CLIENTE,NOM_CLIENTE,APELLIDO_PATERNO,APELLIDO_MATERNO,EDAD,NACIONALIDAD,GENERO,DIRECCION_CLIENTE,TELEFONO,EMAIL,USUARIO_ID_USUARIO):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("sp_modificar_cliente", [ID,RUT_CLIENTE,NOM_CLIENTE,APELLIDO_PATERNO,APELLIDO_MATERNO,EDAD,NACIONALIDAD,GENERO,DIRECCION_CLIENTE,TELEFONO,EMAIL,USUARIO_ID_USUARIO, salida])
+    return salida.getvalue()

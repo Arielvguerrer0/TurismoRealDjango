@@ -58,4 +58,5 @@ urlpatterns = [
     path('listarCliente/', cliente_list),
     path('cliente/crear/', cliente_create),
     path('cliente/<id>', get_cliente),
+    path('cliente/modificar/<id>', cliente_modify),
 ]

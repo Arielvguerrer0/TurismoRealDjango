@@ -682,3 +682,28 @@ def cliente_create(request):
         else:
             return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['POST'])
+def cliente_modify(request, id):
+    if request.method == 'POST':
+        get_cliente = buscar_cliente(id)
+        print (get_cliente)
+        if(get_cliente == []):
+            return  Response({'response':'No existe un cliente ID'}, status=status.HTTP_404_NOT_FOUND)
+
+        RUT_CLIENTE = request.data.get('RUT_CLIENTE')
+        NOM_CLIENTE = request.data.get('NOM_CLIENTE')
+        APELLIDO_PATERNO = request.data.get('APELLIDO_PATERNO')
+        APELLIDO_MATERNO = request.data.get('APELLIDO_MATERNO')
+        EDAD = request.data.get('EDAD')
+        NACIONALIDAD = request.data.get('NACIONALIDAD')
+        GENERO = request.data.get('GENERO')
+        DIRECCION_CLIENTE = request.data.get('DIRECCION_CLIENTE')
+        TELEFONO = request.data.get('TELEFONO')
+        EMAIL = request.data.get('EMAIL')
+        USUARIO_ID_USUARIO = request.data.get('USUARIO_ID_USUARIO')
+        
+        salida = modificar_cliente(id,RUT_CLIENTE,NOM_CLIENTE,APELLIDO_PATERNO,APELLIDO_MATERNO,EDAD,NACIONALIDAD,GENERO,DIRECCION_CLIENTE,TELEFONO,EMAIL,USUARIO_ID_USUARIO)
+        if salida == 1:
+            return Response({'response':'Se modifico correctamente el cliente'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
