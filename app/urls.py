@@ -57,4 +57,5 @@ urlpatterns = [
     #Cliente
     path('listarCliente/', cliente_list),
     path('cliente/crear/', cliente_create),
+    path('cliente/<id>', get_cliente),
 ]

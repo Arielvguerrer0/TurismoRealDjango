@@ -609,7 +609,6 @@ def mttoDepartamento_delete(request, id):
 def cliente_list(request):
     if request.method == 'GET':
         get_cliente = listar_cliente()
-        print (get_cliente)
         if(get_cliente != []):
             clientes = []
             res = {}
@@ -628,7 +627,34 @@ def cliente_list(request):
                 res['EMAIL'] = cliente[10]
                 res['USUARIO_ID_USUARIO'] = cliente[11]
                 clientes.append(res)
-                print ("test2",clientes)
+            return Response(clientes, status=status.HTTP_200_OK)
+        elif(get_cliente == []):
+            return Response({"Error": "No se encontraron clientes"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_cliente(request,id):
+    if request.method == 'GET':
+        get_cliente = buscar_cliente(id)
+        if(get_cliente != []):
+            clientes = []
+            res = {}
+            for cliente in get_cliente:
+                res = {}
+                res['ID_CLIENTE'] = cliente[0]
+                res['RUT_CLIENTE'] = cliente[1]
+                res['NOM_CLIENTE'] = cliente[2]
+                res['APELLIDO_PATERNO'] = cliente[3]
+                res['APELLIDO_MATERNO'] = cliente[4]
+                res['EDAD'] = cliente[5]
+                res['NACIONALIDAD'] = cliente[6]
+                res['GENERO'] = cliente[7]
+                res['DIRECCION_CLIENTE'] = cliente[8]
+                res['TELEFONO'] = cliente[9]
+                res['EMAIL'] = cliente[10]
+                res['USUARIO_ID_USUARIO'] = cliente[11]
+                clientes.append(res)
             return Response(clientes, status=status.HTTP_200_OK)
         elif(get_cliente == []):
             return Response({"Error": "No se encontraron clientes"}, status=status.HTTP_404_NOT_FOUND)
@@ -655,3 +681,4 @@ def cliente_create(request):
             return Response({'response':'Se creo correctamente el cliente'}, status=status.HTTP_201_CREATED)
         else:
             return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
