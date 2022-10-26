@@ -426,7 +426,7 @@ def reserva_bruto(request):
                 res['ESTADO_RESERVA'] = reserva[4]
                 res['FECHA_ESTADO_RESERVA '] = reserva[5]
                 res['DEPARTAMENTO_ID_DEPARTAMENTO'] = reserva[6]
-                res['USUARIO_ID_USUAIRO'] = reserva[7]
+                res['USUARIO_ID_USUARIO'] = reserva[7]
                 reservas.append(res)
             return Response(reservas, status=status.HTTP_200_OK)
         elif(get_reserva == []):
@@ -634,3 +634,24 @@ def cliente_list(request):
             return Response({"Error": "No se encontraron clientes"}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def cliente_create(request):
+    if request.method == 'POST':
+        RUT_CLIENTE = request.data.get('RUT_CLIENTE')
+        NOM_CLIENTE = request.data.get('NOM_CLIENTE')
+        APELLIDO_PATERNO = request.data.get('APELLIDO_PATERNO')
+        APELLIDO_MATERNO = request.data.get('APELLIDO_MATERNO')
+        EDAD = request.data.get('EDAD')
+        NACIONALIDAD = request.data.get('NACIONALIDAD')
+        GENERO = request.data.get('GENERO')
+        DIRECCION_CLIENTE = request.data.get('DIRECCION_CLIENTE')
+        TELEFONO = request.data.get('TELEFONO')
+        EMAIL = request.data.get('EMAIL')
+        USUARIO_ID_USUARIO = request.data.get('USUARIO_ID_USUARIO')
+        
+        salida = crear_cliente(RUT_CLIENTE,NOM_CLIENTE,APELLIDO_PATERNO,APELLIDO_MATERNO,EDAD,NACIONALIDAD,GENERO,DIRECCION_CLIENTE,TELEFONO,EMAIL,USUARIO_ID_USUARIO)
+        if salida == 1:
+            return Response({'response':'Se creo correctamente el cliente'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

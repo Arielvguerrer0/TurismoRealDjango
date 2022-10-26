@@ -56,4 +56,5 @@ urlpatterns = [
     path('mttoDepartamento/eliminar/<id>', mttoDepartamento_delete),
     #Cliente
     path('listarCliente/', cliente_list),
+    path('cliente/crear/', cliente_create),
 ]
