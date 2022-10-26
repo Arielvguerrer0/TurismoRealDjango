@@ -707,3 +707,17 @@ def cliente_modify(request, id):
             return Response({'response':'Se modifico correctamente el cliente'}, status=status.HTTP_201_CREATED)
         else:
             return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['DELETE'])
+def cliente_delete(request, id):
+    if request.method == 'DELETE':
+        get_cliente = eliminar_cliente(id)
+        if(get_cliente == []):
+            ##Revisar que cuando no se encuentre id deberia enviar mensaje de error.
+            return  Response({'response':'No existe mantenciones con ese ID'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            salida = eliminar_cliente(id)
+    if salida == 1:
+        return Response({'response':'Se eliminó correctamente la mantencion'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
