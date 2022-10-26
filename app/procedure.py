@@ -225,3 +225,15 @@ def eliminar_mttoDepartamento(id):
     salida = cursor.var(cx_Oracle.NUMBER)
     cursor.callproc("SP_ELIMINAR_mttoDepartamento", [id,salida])
     return salida.getvalue()
+
+#Mantenimiento Cliente
+def listar_cliente():
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()    
+    cursor.callproc("SP_LISTAR_CLIENTE",[out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista

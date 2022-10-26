@@ -525,7 +525,7 @@ def mttoDepartamento_list(request):
                 res['FECHA_SALIDA'] = mttoDepto[2]
                 res['DESCRIPCION_MTTO'] = mttoDepto[3]
                 res['DISPONIBILIDAD'] = mttoDepto[4]
-                res['DEPARTAMENTO_ID_DEPARTAMENTO '] = mttoDepto[5]
+                res['DEPARTAMENTO_ID_DEPARTAMENTO'] = mttoDepto[5]
                 mttoDepartamento.append(res)
             return Response(mttoDepartamento, status=status.HTTP_200_OK)
         elif(get_mttoDepartamento == []):
@@ -603,3 +603,34 @@ def mttoDepartamento_delete(request, id):
         return Response({'response':'Se eliminó correctamente la mantencion'}, status=status.HTTP_200_OK)
     else:
         return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+#Mantenimiento Cliente
+@api_view(['GET', 'POST'])
+def cliente_list(request):
+    if request.method == 'GET':
+        get_cliente = listar_cliente()
+        print (get_cliente)
+        if(get_cliente != []):
+            clientes = []
+            res = {}
+            for cliente in get_cliente:
+                res = {}
+                res['ID_CLIENTE'] = cliente[0]
+                res['RUT_CLIENTE'] = cliente[1]
+                res['NOM_CLIENTE'] = cliente[2]
+                res['APELLIDO_PATERNO'] = cliente[3]
+                res['APELLIDO_MATERNO'] = cliente[4]
+                res['EDAD'] = cliente[5]
+                res['NACIONALIDAD'] = cliente[6]
+                res['GENERO'] = cliente[7]
+                res['DIRECCION_CLIENTE'] = cliente[8]
+                res['TELEFONO'] = cliente[9]
+                res['EMAIL'] = cliente[10]
+                res['USUARIO_ID_USUARIO'] = cliente[11]
+                clientes.append(res)
+                print ("test2",clientes)
+            return Response(clientes, status=status.HTTP_200_OK)
+        elif(get_cliente == []):
+            return Response({"Error": "No se encontraron clientes"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)

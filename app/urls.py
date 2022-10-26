@@ -54,4 +54,6 @@ urlpatterns = [
     path('mttoDepartamento/<id>', get_mttoDepartamento),
     path('mttoDepartamento/modificar/<id>', mttoDepartamento_modify),
     path('mttoDepartamento/eliminar/<id>', mttoDepartamento_delete),
+    #Cliente
+    path('listarCliente/', cliente_list),
 ]
