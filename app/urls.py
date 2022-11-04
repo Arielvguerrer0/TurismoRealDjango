@@ -60,4 +60,11 @@ urlpatterns = [
     path('cliente/<id>', get_cliente),
     path('cliente/modificar/<id>', cliente_modify),
     path('cliente/eliminar/<id>', cliente_delete),
+    #CheckIn
+    path('listarCheckIn/', checkIn_list),
+    path('checkIn/crear/', checkIn_create),
+    #path('checkIn/<id>', get_checkIn),
+    #path('checkIn/modificar/<id>', checkIn_modify),
+    #path('checkIn/eliminar/<id>', checkIn_delete),
+
 ]

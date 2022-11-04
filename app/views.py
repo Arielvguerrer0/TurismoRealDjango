@@ -721,3 +721,37 @@ def cliente_delete(request, id):
         return Response({'response':'Se eliminó correctamente la mantencion'}, status=status.HTTP_200_OK)
     else:
         return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+#Mantenimiento Check-in
+@api_view(['GET', 'POST'])
+def checkIn_list(request):
+    if request.method == 'GET':
+        get_checkIn = listar_checkIn()
+        if(get_checkIn != []):
+            checkIn = []
+            res = {}
+            for check in get_checkIn:
+                res = {}
+                res['ID_CHECK_IN'] = check[0]
+                res['FECHA_CHECK_IN'] = check[1]
+                res['OBSERVACION'] = check[2]
+                res['RESERVA_ID_RESERVA'] = check[3]
+                checkIn.append(res)
+            return Response(checkIn, status=status.HTTP_200_OK)
+        elif(get_checkIn == []):
+            return Response({"Error": "No se encontraron reservas"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def checkIn_create(request):
+    if request.method == 'POST':
+        FECHA_CHECK_IN = request.data.get('FECHA_CHECK_IN')
+        OBSERVACION = request.data.get('OBSERVACION')
+        RESERVA_ID_RESERVA = request.data.get('RESERVA_ID_RESERVA')
+        
+        salida = crear_checkIn(FECHA_CHECK_IN,OBSERVACION,RESERVA_ID_RESERVA)
+        if salida == 1:
+            return Response({'response':'Se creo correctamente el check-In'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
