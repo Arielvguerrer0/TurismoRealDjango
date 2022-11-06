@@ -288,3 +288,40 @@ def crear_checkIn(FECHA_CHECK_IN,OBSERVACION,RESERVA_ID_RESERVA):
     salida = cursor.var(cx_Oracle.NUMBER)
     cursor.callproc("SP_CREAR_CHECKIN", [FECHA_CHECK_IN,OBSERVACION,RESERVA_ID_RESERVA, salida])
     return salida.getvalue()
+
+def buscar_checkIn(id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("SP_BUSCAR_CHECKIN",[id,out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
+def modificar_checkIn(ID,FECHA_CHECK_IN,OBSERVACION,RESERVA_ID_RESERVA):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("SP_MODIFICAR_CHECKIN", [ID,FECHA_CHECK_IN,OBSERVACION,RESERVA_ID_RESERVA, salida])
+    return salida.getvalue()
+
+def eliminar_checkIn(id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("SP_ELIMINAR_CHECKIN", [id,salida])
+    return salida.getvalue()
+
+#Mantenimiento Inventario
+def listar_inventario():
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()    
+    cursor.callproc("SP_LISTAR_INVENTARIO",[out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista

@@ -63,8 +63,20 @@ urlpatterns = [
     #CheckIn
     path('listarCheckIn/', checkIn_list),
     path('checkIn/crear/', checkIn_create),
-    #path('checkIn/<id>', get_checkIn),
-    #path('checkIn/modificar/<id>', checkIn_modify),
-    #path('checkIn/eliminar/<id>', checkIn_delete),
+    path('checkIn/<id>', get_checkIn),
+    path('checkIn/modificar/<id>', checkIn_modify),
+    path('checkIn/eliminar/<id>', checkIn_delete),
+    #CheckOut
+    #path('listarCheckOut/', checkOut_list),
+    #path('checkOut/crear/', checkOut_create),
+    #path('checkOut/<id>', get_checkOut),
+    #path('checkOut/modificar/<id>', checkOut_modify),
+    #path('checkOut/eliminar/<id>', checkOut_delete),
 
+    #Inventario
+    path('listarInventario/', inventario_list),
+    #path('inventario/crear/', inventario_create),
+    #path('inventario/<id>', get_inventario),
+    #path('inventario/modificar/<id>', inventario_modify),
+    #path('inventario/eliminar/<id>', inventario_delete),
 ]

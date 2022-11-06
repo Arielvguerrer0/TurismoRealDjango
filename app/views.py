@@ -755,3 +755,78 @@ def checkIn_create(request):
             return Response({'response':'Se creo correctamente el check-In'}, status=status.HTTP_201_CREATED)
         else:
             return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_checkIn(request,id):
+    if request.method == 'GET':
+        get_checkIn = buscar_checkIn(id)
+        if(get_checkIn != []):
+            checkIn = []
+            res = {}
+            for check in get_checkIn:
+                res = {}
+                res['ID_CHECK_IN'] = check[0]
+                res['FECHA_CHECK_IN'] = check[1]
+                res['OBSERVACION'] = check[2]
+                res['RESERVA_ID_RESERVA'] = check[3]
+                checkIn.append(res)
+            return Response(checkIn, status=status.HTTP_200_OK)
+        elif(get_checkIn == []):
+            return Response({"Error": "No se encontraron check-In"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def checkIn_modify(request, id):
+    if request.method == 'POST':
+        get_checkIn = buscar_checkIn(id)
+        if(get_checkIn == []):
+            return  Response({'response':'No existe un Check-In'}, status=status.HTTP_404_NOT_FOUND)
+
+        FECHA_CHECK_IN = request.data.get('FECHA_CHECK_IN')
+        OBSERVACION = request.data.get('OBSERVACION')
+        RESERVA_ID_RESERVA = request.data.get('RESERVA_ID_RESERVA')
+        
+        salida = modificar_checkIn(id,FECHA_CHECK_IN,OBSERVACION,RESERVA_ID_RESERVA)
+        if salida == 1:
+            return Response({'response':'Se modifico correctamente el Check-in'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['DELETE'])
+def checkIn_delete(request, id):
+    if request.method == 'DELETE':
+        get_checkIn = eliminar_checkIn(id)
+        if(get_checkIn == []):
+            ##Revisar que cuando no se encuentre id deberia enviar mensaje de error.
+            return  Response({'response':'No existe check-in con ese ID'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            salida = eliminar_checkIn(id)
+    if salida == 1:
+        return Response({'response':'Se eliminó correctamente el check-in'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+#Mantenimiento Inventario
+@api_view(['GET', 'POST'])
+def inventario_list(request):
+    if request.method == 'GET':
+        get_inventario = listar_inventario()
+        if(get_inventario != []):
+            inventarios = []
+            res = {}
+            for invent in get_inventario:
+                res = {}
+                res['ID_INVENTARIO'] = invent[0]
+                res['FECHA_INVENTARIO'] = invent[1]
+                res['CANT_PRODUCTO_INVENTARIO'] = invent[2]
+                res['VALOR_ESTIMADO'] = invent[3]
+                res['DESCRIPCION_INVENTARIO'] = invent[4]
+                res['DEPARTAMENTO_ID_DEPARTAMENTO'] = invent[5]
+                res['PRODUCTO_ID_PRODUCTO'] = invent[6]
+                inventarios.append(res)
+            return Response(inventarios, status=status.HTTP_200_OK)
+        elif(get_inventario == []):
+            return Response({"Error": "No se encontraron inventarios"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
