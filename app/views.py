@@ -830,3 +830,76 @@ def inventario_list(request):
             return Response({"Error": "No se encontraron inventarios"}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def inventario_create(request):
+    if request.method == 'POST':
+        FECHA_INVENTARIO = request.data.get('FECHA_INVENTARIO')
+        CANT_PRODUCTO_INVENTARIO = request.data.get('CANT_PRODUCTO_INVENTARIO')
+        VALOR_ESTIMADO = request.data.get('VALOR_ESTIMADO')
+        DESCRIPCION_INVENTARIO = request.data.get('DESCRIPCION_INVENTARIO')
+        DEPARTAMENTO_ID_DEPARTAMENTO = request.data.get('DEPARTAMENTO_ID_DEPARTAMENTO')
+        PRODUCTO_ID_PRODUCTO = request.data.get('PRODUCTO_ID_PRODUCTO')
+        
+        salida = crear_inventario(FECHA_INVENTARIO,CANT_PRODUCTO_INVENTARIO,VALOR_ESTIMADO,DESCRIPCION_INVENTARIO,DEPARTAMENTO_ID_DEPARTAMENTO,PRODUCTO_ID_PRODUCTO)
+        if salida == 1:
+            return Response({'response':'Se creo correctamente el inventario'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_inventario(request,id):
+    if request.method == 'GET':
+        get_inventario = buscar_inventario(id)
+        if(get_inventario != []):
+            inventarios = []
+            res = {}
+            for invent in get_inventario:
+                res = {}
+                res['ID_INVENTARIO'] = invent[0]
+                res['FECHA_INVENTARIO'] = invent[1]
+                res['CANT_PRODUCTO_INVENTARIO'] = invent[2]
+                res['VALOR_ESTIMADO'] = invent[3]
+                res['DESCRIPCION_INVENTARIO'] = invent[4]
+                res['DEPARTAMENTO_ID_DEPARTAMENTO'] = invent[5]
+                res['PRODUCTO_ID_PRODUCTO'] = invent[6]
+                inventarios.append(res)
+            return Response(inventarios, status=status.HTTP_200_OK)
+        elif(get_inventario == []):
+            return Response({"Error": "No se encontraron inventarios"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def inventario_modify(request, id):
+    if request.method == 'POST':
+        get_inventario = buscar_inventario(id)
+        if(get_inventario == []):
+            return  Response({'response':'No existe un inventario'}, status=status.HTTP_404_NOT_FOUND)
+
+        FECHA_INVENTARIO = request.data.get('FECHA_INVENTARIO')
+        CANT_PRODUCTO_INVENTARIO = request.data.get('CANT_PRODUCTO_INVENTARIO')
+        VALOR_ESTIMADO = request.data.get('VALOR_ESTIMADO')
+        DESCRIPCION_INVENTARIO = request.data.get('DESCRIPCION_INVENTARIO')
+        DEPARTAMENTO_ID_DEPARTAMENTO = request.data.get('DEPARTAMENTO_ID_DEPARTAMENTO')
+        PRODUCTO_ID_PRODUCTO = request.data.get('PRODUCTO_ID_PRODUCTO')
+        
+        salida = modificar_inventario(id,FECHA_INVENTARIO,CANT_PRODUCTO_INVENTARIO,VALOR_ESTIMADO,DESCRIPCION_INVENTARIO,DEPARTAMENTO_ID_DEPARTAMENTO,PRODUCTO_ID_PRODUCTO)
+        if salida == 1:
+            return Response({'response':'Se modifico correctamente el inventario'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['DELETE'])
+def inventario_delete(request, id):
+    if request.method == 'DELETE':
+        get_inventario = eliminar_inventario(id)
+        if(get_inventario == []):
+            ##Revisar que cuando no se encuentre id deberia enviar mensaje de error.
+            return  Response({'response':'No existe inventario con ese ID'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            salida = eliminar_inventario(id)
+    if salida == 1:
+        return Response({'response':'Se eliminó correctamente el inventario'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

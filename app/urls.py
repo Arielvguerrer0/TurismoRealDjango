@@ -75,8 +75,8 @@ urlpatterns = [
 
     #Inventario
     path('listarInventario/', inventario_list),
-    #path('inventario/crear/', inventario_create),
-    #path('inventario/<id>', get_inventario),
-    #path('inventario/modificar/<id>', inventario_modify),
-    #path('inventario/eliminar/<id>', inventario_delete),
+    path('inventario/crear/', inventario_create),
+    path('inventario/<id>', get_inventario),
+    path('inventario/modificar/<id>', inventario_modify),
+    path('inventario/eliminar/<id>', inventario_delete),
 ]
