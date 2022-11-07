@@ -62,6 +62,11 @@
 
    CREATE SEQUENCE  "SEQ_DEPARTAMENTOS"  MINVALUE 1 MAXVALUE 99999 INCREMENT BY 1 START WITH 21 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  GLOBAL ;
 --------------------------------------------------------
+--  DDL for Sequence SEQ_INVENTARIO
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "SEQ_INVENTARIO"  MINVALUE 1 MAXVALUE 99999 INCREMENT BY 1 START WITH 21 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  GLOBAL ;
+--------------------------------------------------------
 --  DDL for Sequence SEQ_MTTO_DEPARTAMENTO
 --------------------------------------------------------
 
@@ -296,6 +301,18 @@ END;
 
 /
 --------------------------------------------------------
+--  DDL for Procedure SP_BUSCAR_INVENTARIO
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_BUSCAR_INVENTARIO" (id number,inventario out SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN inventario for SELECT * FROM inventario WHERE ID_INVENTARIO = id;
+END;
+
+/
+--------------------------------------------------------
 --  DDL for Procedure SP_BUSCAR_MTTODEPARTAMENTO
 --------------------------------------------------------
 set define off;
@@ -410,6 +427,29 @@ END;
 
 /
 --------------------------------------------------------
+--  DDL for Procedure SP_CREAR_INVENTARIO
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_CREAR_INVENTARIO" (
+FECHA_INVENTARIO DATE, 
+CANT_PRODUCTO_INVENTARIO NUMBER, 
+VALOR_ESTIMADO NUMBER,
+DESCRIPCION_INVENTARIO VARCHAR2, 
+DEPARTAMENTO_ID_DEPARTAMENTO NUMBER, 
+PRODUCTO_ID_PRODUCTO NUMBER, 
+respuesta out number)
+IS
+BEGIN
+    insert into INVENTARIO values (seq_inventario.NEXTVAL, FECHA_INVENTARIO,CANT_PRODUCTO_INVENTARIO,VALOR_ESTIMADO,DESCRIPCION_INVENTARIO,DEPARTAMENTO_ID_DEPARTAMENTO,PRODUCTO_ID_PRODUCTO);
+    respuesta := 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        respuesta := 0;
+END;
+
+/
+--------------------------------------------------------
 --  DDL for Procedure SP_CREAR_MTTODEPARTAMENTO
 --------------------------------------------------------
 set define off;
@@ -512,6 +552,26 @@ FROM
     departamento
 WHERE
     id_departamento = id;
+    salida:= 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        salida := 0;
+END;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure SP_ELIMINAR_INVENTARIO
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_ELIMINAR_INVENTARIO" (id number,salida out number)
+IS
+BEGIN
+DELETE
+FROM
+    inventario
+WHERE
+    id_inventario = id;
     salida:= 1;
 EXCEPTION
     WHEN OTHERS THEN
@@ -794,6 +854,38 @@ salida:= 1;
 EXCEPTION
     WHEN OTHERS THEN
         salida := 0;
+END;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure SP_MODIFICAR_INVENTARIO
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_MODIFICAR_INVENTARIO" (id NUMBER,
+v_fecha_inventario DATE, 
+v_cant_producto_inventario NUMBER, 
+v_valor_estimado NUMBER, 
+v_descripcion_inventario VARCHAR, 
+v_departamento_id_departamento NUMBER, 
+v_producto_id_producto NUMBER, 
+
+respuesta out number)
+IS
+BEGIN
+    update inventario set 
+    FECHA_INVENTARIO = v_fecha_inventario,
+    CANT_PRODUCTO_INVENTARIO = v_cant_producto_inventario,
+    VALOR_ESTIMADO = v_valor_estimado,
+    DESCRIPCION_INVENTARIO = v_descripcion_inventario,
+    DEPARTAMENTO_ID_DEPARTAMENTO = v_departamento_id_departamento,
+    PRODUCTO_ID_PRODUCTO = v_producto_id_producto
+
+    WHERE ID_INVENTARIO = id;
+    respuesta := 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        respuesta := 0;
 END;
 
 /
