@@ -48,6 +48,7 @@ urlpatterns = [
     path('reserva/<id>', get_reserva),
     path('reserva/modificar/<id>', reserva_modify),
     path('reserva/eliminar/<id>', reserva_delete),
+    path('reservausuario/<id>', get_reserva_usuario),
     #mttoDepartamento
     path('mttoDepartamento/', mttoDepartamento_list),
     path('mttoDepartamento/crear/', mttoDepartamento_create),

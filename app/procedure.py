@@ -168,6 +168,17 @@ def buscar_reserva(id):
         lista.append(fila)
     return lista
 
+def listar_reserva_usuario(id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("SP_BUSCAR_RESERVA_USUARIO",[id,out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
 def modificar_reserva(ID,FECHA_INGRESO,FECHA_SALIDA,CANT_DIA_RESERVA,ESTADO_RESERVA,FECHA_ESTADO_RESERVA,DEPARTAMENTO_ID_DEPARTAMENTO,USUARIO_ID_USUARIO):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()

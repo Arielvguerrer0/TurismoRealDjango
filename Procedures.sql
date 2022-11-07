@@ -675,7 +675,7 @@ set define off;
   CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_LISTAR_DEPARTAMENTO_ADMIN" (departamento out SYS_REFCURSOR)
 IS
 BEGIN
-    OPEN departamento for select d.nom_depto as "NOMBRE DEPARTAMENTO", d.desc_depto as "DESCRIPCIÓN", d.direccion, d.cant_habitacion as "HABITACIONES", d.cant_banio as "CANTIDAD BAÑOS", d.calefaccion, d.internet, 
+    OPEN departamento for select d.nom_depto as "NOMBRE DEPARTAMENTO", d.desc_depto as "DESCRIPCIï¿½N", d.direccion, d.cant_habitacion as "HABITACIONES", d.cant_banio as "CANTIDAD BAï¿½OS", d.calefaccion, d.internet, 
     d.amoblado, d.television, d.disponible, d.valor_dia as "VALOR", c.nom_comuna as "COMUNA"
     from departamento d, comuna c
     where d.comuna_id_comuna = c.id_comuna;
@@ -962,3 +962,11 @@ EXCEPTION
 END;
 
 /
+
+  CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_BUSCAR_RESERVA_USUARIO" (id number,reserva out SYS_REFCURSOR)
+IS
+BEGIN
+   OPEN reserva for select r.fecha_ingreso, r.fecha_salida ,r.cant_dia_reserva, r.estado_reserva, d.nom_depto
+    from reserva r, departamento d, usuario u  
+    where r.departamento_id_departamento = d.id_departamento and r.usuario_id_usuario = u.id_usuario and u.id_usuario = id;
+END;

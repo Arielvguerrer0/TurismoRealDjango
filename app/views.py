@@ -475,6 +475,27 @@ def get_reserva(request,id):
         else:
             return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['GET'])
+def get_reserva_usuario(request,id):
+    if request.method == 'GET':
+        get_reserva = listar_reserva_usuario(id)
+        if(get_reserva != []):
+            reservas = []
+            res = {}
+            for reserva in get_reserva:
+                res = {}
+                res['FECHA_INGRESO'] = reserva[0]
+                res['FECHA_SALIDA'] = reserva[1]
+                res['CANT_DIA_RESERVA'] = reserva[2]
+                res['ESTADO_RESERVA'] = reserva[3]
+                res['NOM_DEPTO'] = reserva[4]
+                reservas.append(res)
+            return Response(reservas, status=status.HTTP_200_OK)
+        elif(get_reserva == []):
+            return Response({"Error": "No existe reserva con ese ID"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 @api_view(['POST'])
 def reserva_modify(request, id):
     if request.method == 'POST':
