@@ -484,11 +484,12 @@ def get_reserva_usuario(request,id):
             res = {}
             for reserva in get_reserva:
                 res = {}
-                res['FECHA_INGRESO'] = reserva[0]
-                res['FECHA_SALIDA'] = reserva[1]
-                res['CANT_DIA_RESERVA'] = reserva[2]
-                res['ESTADO_RESERVA'] = reserva[3]
-                res['NOM_DEPTO'] = reserva[4]
+                res['ID_RESERVA'] = reserva[0]
+                res['FECHA_INGRESO'] = reserva[1]
+                res['FECHA_SALIDA'] = reserva[2]
+                res['CANT_DIA_RESERVA'] = reserva[3]
+                res['ESTADO_RESERVA'] = reserva[4]
+                res['NOM_DEPTO'] = reserva[5]
                 reservas.append(res)
             return Response(reservas, status=status.HTTP_200_OK)
         elif(get_reserva == []):

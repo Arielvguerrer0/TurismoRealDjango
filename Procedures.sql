@@ -963,10 +963,10 @@ END;
 
 /
 
-  CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_BUSCAR_RESERVA_USUARIO" (id number,reserva out SYS_REFCURSOR)
+create or replace NONEDITIONABLE PROCEDURE "SP_BUSCAR_RESERVA_USUARIO" (id number,reserva out SYS_REFCURSOR)
 IS
 BEGIN
-   OPEN reserva for select r.fecha_ingreso, r.fecha_salida ,r.cant_dia_reserva, r.estado_reserva, d.nom_depto
+   OPEN reserva for select r.id_reserva, r.fecha_ingreso, r.fecha_salida ,r.cant_dia_reserva, r.estado_reserva, d.nom_depto
     from reserva r, departamento d, usuario u  
     where r.departamento_id_departamento = d.id_departamento and r.usuario_id_usuario = u.id_usuario and u.id_usuario = id;
 END;
