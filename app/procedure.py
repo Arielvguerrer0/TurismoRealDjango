@@ -368,3 +368,47 @@ def eliminar_inventario(id):
     salida = cursor.var(cx_Oracle.NUMBER)
     cursor.callproc("SP_ELIMINAR_INVENTARIO", [id,salida])
     return salida.getvalue()
+
+#Mantenimiento CheckOut
+def listar_checkOut():
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()    
+    cursor.callproc("SP_LISTAR_CHECKOUT",[out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
+def crear_checkOut(FECHA_CHECK_OUT,OBSERVACION,RESERVA_ID_RESERVA,MULTA_ID_MULTA):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("SP_CREAR_CHECKOUT", [FECHA_CHECK_OUT,OBSERVACION,RESERVA_ID_RESERVA,MULTA_ID_MULTA, salida])
+    return salida.getvalue()
+
+def buscar_checkOut(id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("SP_BUSCAR_CHECKOUT",[id,out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
+def modificar_checkOut(ID,FECHA_CHECK_OUT,OBSERVACION,RESERVA_ID_RESERVA,MULTA_ID_MULTA):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("SP_MODIFICAR_CHECKOUT", [ID,FECHA_CHECK_OUT,OBSERVACION,RESERVA_ID_RESERVA,MULTA_ID_MULTA, salida])
+    return salida.getvalue()
+
+def eliminar_checkOut(id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("SP_ELIMINAR_CHECKOUT", [id,salida])
+    return salida.getvalue()

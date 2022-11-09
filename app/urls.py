@@ -68,11 +68,11 @@ urlpatterns = [
     path('checkIn/modificar/<id>', checkIn_modify),
     path('checkIn/eliminar/<id>', checkIn_delete),
     #CheckOut
-    #path('listarCheckOut/', checkOut_list),
-    #path('checkOut/crear/', checkOut_create),
-    #path('checkOut/<id>', get_checkOut),
-    #path('checkOut/modificar/<id>', checkOut_modify),
-    #path('checkOut/eliminar/<id>', checkOut_delete),
+    path('listarCheckOut/', checkOut_list),
+    path('checkOut/crear/', checkOut_create),
+    path('checkOut/<id>', get_checkOut),
+    path('checkOut/modificar/<id>', checkOut_modify),
+    path('checkOut/eliminar/<id>', checkOut_delete),
 
     #Inventario
     path('listarInventario/', inventario_list),

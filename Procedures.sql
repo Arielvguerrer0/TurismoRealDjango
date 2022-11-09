@@ -1,11 +1,21 @@
 --------------------------------------------------------
--- Archivo creado  - domingo-noviembre-06-2022   
+-- Archivo creado  - martes-noviembre-08-2022   
 --------------------------------------------------------
 --------------------------------------------------------
 --  DDL for Sequence Check-In_SEQ
 --------------------------------------------------------
 
    CREATE SEQUENCE  "Check-In_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 21 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  GLOBAL ;
+--------------------------------------------------------
+--  DDL for Sequence CHECK_OUT_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "CHECK_OUT_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 21 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  GLOBAL ;
+--------------------------------------------------------
+--  DDL for Sequence CHECK_OUT_SEQ1
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "CHECK_OUT_SEQ1"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 21 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  GLOBAL ;
 --------------------------------------------------------
 --  DDL for Sequence CLIENTE_SEQ
 --------------------------------------------------------
@@ -37,6 +47,11 @@
 
    CREATE SEQUENCE  "MTTO_DEPARTAMENTO_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 21 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  GLOBAL ;
 --------------------------------------------------------
+--  DDL for Sequence MULTA_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "MULTA_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  GLOBAL ;
+--------------------------------------------------------
 --  DDL for Sequence REGION_SEQ
 --------------------------------------------------------
 
@@ -50,7 +65,12 @@
 --  DDL for Sequence SEQ_CHECKIN
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "SEQ_CHECKIN"  MINVALUE 1 MAXVALUE 99999 INCREMENT BY 1 START WITH 41 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  GLOBAL ;
+   CREATE SEQUENCE  "SEQ_CHECKIN"  MINVALUE 1 MAXVALUE 99999 INCREMENT BY 1 START WITH 61 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  GLOBAL ;
+--------------------------------------------------------
+--  DDL for Sequence SEQ_CHECKOUT
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "SEQ_CHECKOUT"  MINVALUE 1 MAXVALUE 99999 INCREMENT BY 1 START WITH 21 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  GLOBAL ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_CLIENTE
 --------------------------------------------------------
@@ -103,6 +123,41 @@ BEGIN
 END;
 /
 ALTER TRIGGER "Check-In_TRG" ENABLE;
+--------------------------------------------------------
+--  DDL for Trigger CHECK_OUT_TRG
+--------------------------------------------------------
+
+  CREATE OR REPLACE EDITIONABLE TRIGGER "CHECK_OUT_TRG" 
+BEFORE INSERT ON CHECK_OUT 
+FOR EACH ROW 
+BEGIN
+  <<COLUMN_SEQUENCES>>
+  BEGIN
+    IF INSERTING AND :NEW.ID_CHECK_OUT IS NULL THEN
+      SELECT CHECK_OUT_SEQ.NEXTVAL INTO :NEW.ID_CHECK_OUT FROM SYS.DUAL;
+    END IF;
+  END COLUMN_SEQUENCES;
+END;
+
+/
+ALTER TRIGGER "CHECK_OUT_TRG" ENABLE;
+--------------------------------------------------------
+--  DDL for Trigger CHECK_OUT_TRG1
+--------------------------------------------------------
+
+  CREATE OR REPLACE EDITIONABLE TRIGGER "CHECK_OUT_TRG1" 
+BEFORE INSERT ON CHECK_OUT 
+FOR EACH ROW 
+BEGIN
+  <<COLUMN_SEQUENCES>>
+  BEGIN
+    IF INSERTING AND :NEW.ID_CHECK_OUT IS NULL THEN
+      SELECT CHECK_OUT_SEQ1.NEXTVAL INTO :NEW.ID_CHECK_OUT FROM SYS.DUAL;
+    END IF;
+  END COLUMN_SEQUENCES;
+END;
+/
+ALTER TRIGGER "CHECK_OUT_TRG1" ENABLE;
 --------------------------------------------------------
 --  DDL for Trigger CLIENTE_TRG
 --------------------------------------------------------
@@ -204,6 +259,23 @@ END;
 /
 ALTER TRIGGER "MTTO_DEPARTAMENTO_TRG" ENABLE;
 --------------------------------------------------------
+--  DDL for Trigger MULTA_TRG
+--------------------------------------------------------
+
+  CREATE OR REPLACE EDITIONABLE TRIGGER "MULTA_TRG" 
+BEFORE INSERT ON MULTA 
+FOR EACH ROW 
+BEGIN
+  <<COLUMN_SEQUENCES>>
+  BEGIN
+    IF INSERTING AND :NEW.ID_MULTA IS NULL THEN
+      SELECT MULTA_SEQ.NEXTVAL INTO :NEW.ID_MULTA FROM SYS.DUAL;
+    END IF;
+  END COLUMN_SEQUENCES;
+END;
+/
+ALTER TRIGGER "MULTA_TRG" ENABLE;
+--------------------------------------------------------
 --  DDL for Trigger REGION_TRG
 --------------------------------------------------------
 
@@ -261,6 +333,18 @@ set define off;
 IS
 BEGIN
     OPEN check_in for SELECT * FROM check_in WHERE id_check_in = id;
+END;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure SP_BUSCAR_CHECKOUT
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_BUSCAR_CHECKOUT" (id number,check_out out SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN check_out for SELECT * FROM check_out WHERE id_check_out = id;
 END;
 
 /
@@ -337,6 +421,20 @@ END;
 
 /
 --------------------------------------------------------
+--  DDL for Procedure SP_BUSCAR_RESERVA_USUARIO
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_BUSCAR_RESERVA_USUARIO" (id number,reserva out SYS_REFCURSOR)
+IS
+BEGIN
+   OPEN reserva for select r.id_reserva, r.fecha_ingreso, r.fecha_salida ,r.cant_dia_reserva, r.estado_reserva, d.nom_depto
+    from reserva r, departamento d, usuario u  
+    where r.departamento_id_departamento = d.id_departamento and r.usuario_id_usuario = u.id_usuario and u.id_usuario = id;
+END;
+
+/
+--------------------------------------------------------
 --  DDL for Procedure SP_BUSCAR_USUARIO
 --------------------------------------------------------
 set define off;
@@ -373,6 +471,27 @@ respuesta out number)
 IS
 BEGIN
     insert into check_in values (seq_checkIn.NEXTVAL, FECHA_CHECK_IN,OBSERVACION,RESERVA_ID_RESERVA);
+    respuesta := 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        respuesta := 0;
+END;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure SP_CREAR_CHECKOUT
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_CREAR_CHECKOUT" (
+FECHA_CHECK_OUT DATE, 
+OBSERVACION VARCHAR2, 
+RESERVA_ID_RESERVA NUMBER, 
+MULTA_ID_MULTA NUMBER, 
+respuesta out number)
+IS
+BEGIN
+    insert into check_out values (seq_checkOut.NEXTVAL, FECHA_CHECK_OUT,OBSERVACION,RESERVA_ID_RESERVA,MULTA_ID_MULTA);
     respuesta := 1;
 EXCEPTION
     WHEN OTHERS THEN
@@ -512,6 +631,26 @@ FROM
     check_in
 WHERE
     id_check_in = id;
+    salida:= 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        salida := 0;
+END;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure SP_ELIMINAR_CHECKOUT
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_ELIMINAR_CHECKOUT" (id number,salida out number)
+IS
+BEGIN
+DELETE
+FROM
+    check_out
+WHERE
+    id_check_out = id;
     salida:= 1;
 EXCEPTION
     WHEN OTHERS THEN
@@ -675,7 +814,7 @@ set define off;
   CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_LISTAR_DEPARTAMENTO_ADMIN" (departamento out SYS_REFCURSOR)
 IS
 BEGIN
-    OPEN departamento for select d.nom_depto as "NOMBRE DEPARTAMENTO", d.desc_depto as "DESCRIPCIï¿½N", d.direccion, d.cant_habitacion as "HABITACIONES", d.cant_banio as "CANTIDAD BAï¿½OS", d.calefaccion, d.internet, 
+    OPEN departamento for select d.nom_depto as "NOMBRE DEPARTAMENTO", d.desc_depto as "DESCRIPCIÓN", d.direccion, d.cant_habitacion as "HABITACIONES", d.cant_banio as "CANTIDAD BAÑOS", d.calefaccion, d.internet, 
     d.amoblado, d.television, d.disponible, d.valor_dia as "VALOR", c.nom_comuna as "COMUNA"
     from departamento d, comuna c
     where d.comuna_id_comuna = c.id_comuna;
@@ -766,6 +905,33 @@ BEGIN
     RESERVA_ID_RESERVA = v_reserva_id_reserva
 
     WHERE id_check_in = id;
+    respuesta := 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        respuesta := 0;
+END;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure SP_MODIFICAR_CHECKOUT
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE NONEDITIONABLE PROCEDURE "SP_MODIFICAR_CHECKOUT" (id NUMBER,
+v_fecha_check_in DATE, 
+v_observacion VARCHAR, 
+v_reserva_id_reserva NUMBER, 
+v_multa_id_multa NUMBER,
+respuesta out number)
+IS
+BEGIN
+    update check_out set 
+    FECHA_CHECK_OUT = v_fecha_check_in,
+    OBSERVACION = v_observacion,
+    RESERVA_ID_RESERVA = v_reserva_id_reserva,
+    MULTA_ID_MULTA = v_multa_id_multa
+
+    WHERE id_check_out = id;
     respuesta := 1;
 EXCEPTION
     WHEN OTHERS THEN
@@ -962,11 +1128,3 @@ EXCEPTION
 END;
 
 /
-
-create or replace NONEDITIONABLE PROCEDURE "SP_BUSCAR_RESERVA_USUARIO" (id number,reserva out SYS_REFCURSOR)
-IS
-BEGIN
-   OPEN reserva for select r.id_reserva, r.fecha_ingreso, r.fecha_salida ,r.cant_dia_reserva, r.estado_reserva, d.nom_depto
-    from reserva r, departamento d, usuario u  
-    where r.departamento_id_departamento = d.id_departamento and r.usuario_id_usuario = u.id_usuario and u.id_usuario = id;
-END;

@@ -925,3 +925,92 @@ def inventario_delete(request, id):
         return Response({'response':'Se eliminó correctamente el inventario'}, status=status.HTTP_200_OK)
     else:
         return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+#Mantenimiento CheckOut
+@api_view(['GET', 'POST'])
+def checkOut_list(request):
+    if request.method == 'GET':
+        get_checkOut = listar_checkOut()
+        if(get_checkOut != []):
+            checkOut = []
+            res = {}
+            for check in get_checkOut:
+                res = {}
+                res['ID_CHECK_OUT'] = check[0]
+                res['FECHA_CHECK_OUT'] = check[1]
+                res['OBSERVACION'] = check[2]
+                res['RESERVA_ID_RESERVA'] = check[3]
+                res['MULTA_ID_MULTA'] = check[4]
+                checkOut.append(res)
+            return Response(checkOut, status=status.HTTP_200_OK)
+        elif(get_checkOut == []):
+            return Response({"Error": "No se encontraron check-out"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def checkOut_create(request):
+    if request.method == 'POST':
+        FECHA_CHECK_OUT = request.data.get('FECHA_CHECK_OUT')
+        OBSERVACION = request.data.get('OBSERVACION')
+        RESERVA_ID_RESERVA = request.data.get('RESERVA_ID_RESERVA')
+        MULTA_ID_MULTA = request.data.get('MULTA_ID_MULTA')
+        
+        salida = crear_checkOut(FECHA_CHECK_OUT,OBSERVACION,RESERVA_ID_RESERVA,MULTA_ID_MULTA)
+        if salida == 1:
+            return Response({'response':'Se creo correctamente el check-Out'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_checkOut(request,id):
+    if request.method == 'GET':
+        get_checkOut = buscar_checkOut(id)
+        if(get_checkOut != []):
+            checkOut = []
+            res = {}
+            for check in get_checkOut:
+                res = {}
+                res['ID_CHECK_IN'] = check[0]
+                res['FECHA_CHECK_IN'] = check[1]
+                res['OBSERVACION'] = check[2]
+                res['RESERVA_ID_RESERVA'] = check[3]
+                res['MULTA_ID_MULTA'] = check[4]
+                checkOut.append(res)
+            return Response(checkOut, status=status.HTTP_200_OK)
+        elif(get_checkOut == []):
+            return Response({"Error": "No se encontraron check-Out"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def checkOut_modify(request, id):
+    if request.method == 'POST':
+        get_checkOut = buscar_checkOut(id)
+        if(get_checkOut == []):
+            return  Response({'response':'No existe un Check-Out'}, status=status.HTTP_404_NOT_FOUND)
+
+        FECHA_CHECK_IN = request.data.get('FECHA_CHECK_IN')
+        OBSERVACION = request.data.get('OBSERVACION')
+        RESERVA_ID_RESERVA = request.data.get('RESERVA_ID_RESERVA')
+        MULTA_ID_MULTA = request.data.get('MULTA_ID_MULTA')
+        
+        salida = modificar_checkOut(id,FECHA_CHECK_IN,OBSERVACION,RESERVA_ID_RESERVA,MULTA_ID_MULTA)
+        if salida == 1:
+            return Response({'response':'Se modifico correctamente el Check-Out'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['DELETE'])
+def checkOut_delete(request, id):
+    if request.method == 'DELETE':
+        get_checkOut = eliminar_checkOut(id)
+        if(get_checkOut == []):
+            ##Revisar que cuando no se encuentre id deberia enviar mensaje de error.
+            return  Response({'response':'No existe check-Out con ese ID'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            salida = eliminar_checkOut(id)
+    if salida == 1:
+        return Response({'response':'Se eliminó correctamente el check-Out'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
