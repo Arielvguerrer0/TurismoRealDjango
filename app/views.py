@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from django.views import View
 from rest_framework.decorators import api_view
 from .procedure import *
+from .tranbank import *
 
 
 
@@ -1012,5 +1013,14 @@ def checkOut_delete(request, id):
             salida = eliminar_checkOut(id)
     if salida == 1:
         return Response({'response':'Se eliminó correctamente el check-Out'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def create_transaction(request):
+    if request.method == 'POST':
+        resp = crearTransaction();
+    
+        return Response( resp, status=status.HTTP_200_OK)
     else:
         return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
