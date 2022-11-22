@@ -1024,14 +1024,9 @@ def create_transaction(request):
         amount = request.data.get('amount')
         return_url = request.data.get('return_url')
 
-        body = {
-            "buy_order": buy_order,
-            "session_id": session_id,
-            "amount": amount,
-            "return_url": return_url
-        }
-
-        resp = crearTransaction(body);
+        body = {"buy_order": buy_order, "session_id": session_id, "amount": amount, "return_url": return_url}
+        resp = crearTransaction(json.dumps(body))
+        print(resp)
     
         return Response( resp, status=status.HTTP_200_OK)
     else:
