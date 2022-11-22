@@ -1019,7 +1019,19 @@ def checkOut_delete(request, id):
 @api_view(['POST'])
 def create_transaction(request):
     if request.method == 'POST':
-        resp = crearTransaction();
+        buy_order = request.data.get('buy_order')
+        session_id = request.data.get('session_id')
+        amount = request.data.get('amount')
+        return_url = request.data.get('return_url')
+
+        body = {
+            "buy_order": buy_order,
+            "session_id": session_id,
+            "amount": amount,
+            "return_url": return_url
+        }
+
+        resp = crearTransaction(body);
     
         return Response( resp, status=status.HTTP_200_OK)
     else:
