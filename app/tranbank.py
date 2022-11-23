@@ -14,26 +14,27 @@ def crearTransaction(request):
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
-
-    getToken(response.json())
-
+    #request.session['tbk_token'] = getToken(response.json())
+    token = getToken(response.json())
+    print(token)
+    #print("LOG 2",request.session['tbk_token'])
     return(response.json())
 
 
-def getToken(request): 
-    tokenTransbank = request.get('token');
-    return;
+def getToken(request):
+    print(request) 
+    return request.get('token')
+    
     
 
-def commit_transaction(token):
+def commitTransaction(token):
     """ 
     Extraer token de la respuesta de transacction
     setearla en la url
     y probar
     """
-
     url = "https://webpay3gint.transbank.cl/rswebpaytransaction/api/webpay/v1.2/transactions/" + token
-    print("URL", url);
+    print("URL", url)
 
     payload = ""
 

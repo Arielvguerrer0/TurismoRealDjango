@@ -1026,8 +1026,15 @@ def create_transaction(request):
 
         body = {"buy_order": buy_order, "session_id": session_id, "amount": amount, "return_url": return_url}
         resp = crearTransaction(json.dumps(body))
+        request.session['tbk_token'] = resp['token']
     
         return Response( resp, status=status.HTTP_200_OK)
     else:
         return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def commit_transaction(request):
+    if request.method == 'POST':
+        print('log 5',request.session['tbk_token'])
+        resp = commitTransaction(request.session['tbk_token'])
 
