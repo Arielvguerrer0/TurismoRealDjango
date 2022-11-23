@@ -82,4 +82,5 @@ urlpatterns = [
     path('inventario/eliminar/<id>', inventario_delete),
     ##Transbank
     path('transbank/crear/', create_transaction),
+    path('transbank/commit/', commit_transaction),
 ]

@@ -1026,8 +1026,8 @@ def create_transaction(request):
 
         body = {"buy_order": buy_order, "session_id": session_id, "amount": amount, "return_url": return_url}
         resp = crearTransaction(json.dumps(body))
-        print(resp)
     
         return Response( resp, status=status.HTTP_200_OK)
     else:
         return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
