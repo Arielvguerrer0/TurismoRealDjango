@@ -1035,6 +1035,9 @@ def create_transaction(request):
 @api_view(['POST'])
 def commit_transaction(request):
     if request.method == 'POST':
-        print('log 5',request.session['tbk_token'])
-        resp = commitTransaction(request.session['tbk_token'])
+        token = request.data.get('token_ws')
+        resp = transactionCommit(token)
+        return Response( resp, status=status.HTTP_200_OK)
+    else:
+        return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

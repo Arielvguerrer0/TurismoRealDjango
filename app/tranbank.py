@@ -26,16 +26,8 @@ def getToken(request):
     return request.get('token')
     
     
-
-def commitTransaction(token):
-    """ 
-    Extraer token de la respuesta de transacction
-    setearla en la url
-    y probar
-    """
-    url = "https://webpay3gint.transbank.cl/rswebpaytransaction/api/webpay/v1.2/transactions/" + token
-    print("URL", url)
-
+def transactionCommit(token):
+    url = f'https://webpay3gint.transbank.cl/rswebpaytransaction/api/webpay/v1.2/transactions/{token}'
     payload = ""
 
     headers = {
@@ -43,7 +35,5 @@ def commitTransaction(token):
     'Tbk-Api-Key-Secret': '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C',
     'Content-Type': 'application/json',
     }
-
-    response = requests.request("PUT", url, headers=headers, data=payload)
-
-    print(response.text)
+    response = requests.put(url, headers=headers, data=None)
+    return(response.json())
