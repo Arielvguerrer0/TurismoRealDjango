@@ -80,6 +80,14 @@ urlpatterns = [
     path('inventario/<id>', get_inventario),
     path('inventario/modificar/<id>', inventario_modify),
     path('inventario/eliminar/<id>', inventario_delete),
+
+    #Servicio Extra
+    path('listarServicioExtra/', servExtra_list),
+    path('ServicioExtra/crear/', servExtra_create),
+    path('ServicioExtra/<id>', get_servExtra),
+    path('ServicioExtra/modificar/<id>', servExtra_modify),
+    path('ServicioExtra/eliminar/<id>', servExtra_delete),
+    
     ##Transbank
     path('transbank/crear/', create_transaction),
     path('transbank/commit/', commit_transaction),

@@ -1016,6 +1016,94 @@ def checkOut_delete(request, id):
     else:
         return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+#Mantenimiento Servicio Extra
+@api_view(['GET', 'POST'])
+def servExtra_list(request):
+    if request.method == 'GET':
+        get_servicioExtra = listar_servicioExtra()
+        if(get_servicioExtra != []):
+            servExtra = []
+            res = {}
+            for servEx in get_servicioExtra:
+                res = {}
+                res['ID_SERVICIO'] = servEx[0]
+                res['NOM_SERVICIO_EXTRA'] = servEx[1]
+                res['DESC_SERVICIO_EXTRA'] = servEx[2]
+                res['VALOR_SERVICIO_EXTRA'] = servEx[3]
+                servExtra.append(res)
+            return Response(servExtra, status=status.HTTP_200_OK)
+        elif(get_servicioExtra == []):
+            return Response({"Error": "No se encontraron servicios extras"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def servExtra_create(request):
+    if request.method == 'POST':
+        NOM_SERVICIO_EXTRA = request.data.get('NOM_SERVICIO_EXTRA')
+        DESC_SERVICIO_EXTRA = request.data.get('DESC_SERVICIO_EXTRA')
+        VALOR_SERVICIO_EXTRA = request.data.get('VALOR_SERVICIO_EXTRA')
+        
+        salida = crear_servicioExtra(NOM_SERVICIO_EXTRA,DESC_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA)
+        if salida == 1:
+            return Response({'response':'Se creo correctamente el servicio extra'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_servExtra(request,id):
+    if request.method == 'GET':
+        get_servicioExtra = buscar_servicioExtra(id)
+        if(get_servicioExtra != []):
+            servExtra = []
+            res = {}
+            for servEx in get_servicioExtra:
+                res = {}
+                res['ID_SERVICIO'] = servEx[0]
+                res['NOM_SERVICIO_EXTRA'] = servEx[1]
+                res['DESC_SERVICIO_EXTRA'] = servEx[2]
+                res['VALOR_SERVICIO_EXTRA'] = servEx[3]
+                servExtra.append(res)
+            return Response(servExtra, status=status.HTTP_200_OK)
+        elif(get_servicioExtra == []):
+            return Response({"Error": "No se encontraron servicios extras"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def servExtra_modify(request, id):
+    if request.method == 'POST':
+        get_servicioExtra = buscar_servicioExtra(id)
+        if(get_servicioExtra == []):
+            return  Response({'response':'No existe un servicios extras'}, status=status.HTTP_404_NOT_FOUND)
+
+        NOM_SERVICIO_EXTRA = request.data.get('NOM_SERVICIO_EXTRA')
+        DESC_SERVICIO_EXTRA = request.data.get('DESC_SERVICIO_EXTRA')
+        VALOR_SERVICIO_EXTRA = request.data.get('VALOR_SERVICIO_EXTRA')
+        
+        salida = modificar_servicioExtra(id,NOM_SERVICIO_EXTRA,DESC_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA)
+        if salida == 1:
+            return Response({'response':'Se modifico correctamente el servicio extra'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['DELETE'])
+def servExtra_delete(request, id):
+    if request.method == 'DELETE':
+        get_servicioExtra = eliminar_servicioExtra(id)
+        if(get_servicioExtra == []):
+            ##Revisar que cuando no se encuentre id deberia enviar mensaje de error.
+            return  Response({'response':'No existe servicio extra con ese ID'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            salida = eliminar_servicioExtra(id)
+    if salida == 1:
+        return Response({'response':'Se eliminó correctamente el servicio extra'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+#TransBank
 @api_view(['POST'])
 def create_transaction(request):
     if request.method == 'POST':
@@ -1040,4 +1128,7 @@ def commit_transaction(request):
         return Response( resp, status=status.HTTP_200_OK)
     else:
         return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
 

@@ -412,3 +412,47 @@ def eliminar_checkOut(id):
     salida = cursor.var(cx_Oracle.NUMBER)
     cursor.callproc("SP_ELIMINAR_CHECKOUT", [id,salida])
     return salida.getvalue()
+
+#Mantenimiento ServExtra
+def listar_servicioExtra():
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()    
+    cursor.callproc("SP_LISTAR_SERVICIOEXTRA",[out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
+def crear_servicioExtra(NOM_SERVICIO_EXTRA,DESC_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("SP_CREAR_SERVICIOEXTRA", [NOM_SERVICIO_EXTRA,DESC_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA, salida])
+    return salida.getvalue()
+
+def buscar_servicioExtra(id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("SP_BUSCAR_SERVICIOEXTRA",[id,out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
+def modificar_servicioExtra(ID,NOM_SERVICIO_EXTRA,DESC_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("SP_MODIFICAR_SERVICIOEXTRA", [ID,NOM_SERVICIO_EXTRA,DESC_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA, salida])
+    return salida.getvalue()
+
+def eliminar_servicioExtra(id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("SP_ELIMINAR_SERVICIOEXTRA", [id,salida])
+    return salida.getvalue()
