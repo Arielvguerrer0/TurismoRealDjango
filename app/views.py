@@ -1077,7 +1077,7 @@ def servExtra_modify(request, id):
         NOM_SERVICIO_EXTRA = request.data.get('NOM_SERVICIO_EXTRA')
         VALOR_SERVICIO_EXTRA = request.data.get('VALOR_SERVICIO_EXTRA')
         
-        salida = modificar_servicioExtra(id,NOM_SERVICIO_EXTRA,DESC_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA)
+        salida = modificar_servicioExtra(id,NOM_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA)
         if salida == 1:
             return Response({'response':'Se modifico correctamente el servicio extra'}, status=status.HTTP_201_CREATED)
         else:
