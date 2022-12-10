@@ -425,11 +425,11 @@ def listar_servicioExtra():
         lista.append(fila)
     return lista
 
-def crear_servicioExtra(NOM_SERVICIO_EXTRA,DESC_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA):
+def crear_servicioExtra(NOM_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     salida = cursor.var(cx_Oracle.NUMBER)
-    cursor.callproc("SP_CREAR_SERVICIOEXTRA", [NOM_SERVICIO_EXTRA,DESC_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA, salida])
+    cursor.callproc("SP_CREAR_SERVICIOEXTRA", [NOM_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA, salida])
     return salida.getvalue()
 
 def buscar_servicioExtra(id):
@@ -443,11 +443,11 @@ def buscar_servicioExtra(id):
         lista.append(fila)
     return lista
 
-def modificar_servicioExtra(ID,NOM_SERVICIO_EXTRA,DESC_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA):
+def modificar_servicioExtra(ID,NOM_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     salida = cursor.var(cx_Oracle.NUMBER)
-    cursor.callproc("SP_MODIFICAR_SERVICIOEXTRA", [ID,NOM_SERVICIO_EXTRA,DESC_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA, salida])
+    cursor.callproc("SP_MODIFICAR_SERVICIOEXTRA", [ID,NOM_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA, salida])
     return salida.getvalue()
 
 def eliminar_servicioExtra(id):

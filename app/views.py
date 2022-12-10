@@ -1028,8 +1028,7 @@ def servExtra_list(request):
                 res = {}
                 res['ID_SERVICIO'] = servEx[0]
                 res['NOM_SERVICIO_EXTRA'] = servEx[1]
-                res['DESC_SERVICIO_EXTRA'] = servEx[2]
-                res['VALOR_SERVICIO_EXTRA'] = servEx[3]
+                res['VALOR_SERVICIO_EXTRA'] = servEx[2]
                 servExtra.append(res)
             return Response(servExtra, status=status.HTTP_200_OK)
         elif(get_servicioExtra == []):
@@ -1041,10 +1040,9 @@ def servExtra_list(request):
 def servExtra_create(request):
     if request.method == 'POST':
         NOM_SERVICIO_EXTRA = request.data.get('NOM_SERVICIO_EXTRA')
-        DESC_SERVICIO_EXTRA = request.data.get('DESC_SERVICIO_EXTRA')
         VALOR_SERVICIO_EXTRA = request.data.get('VALOR_SERVICIO_EXTRA')
         
-        salida = crear_servicioExtra(NOM_SERVICIO_EXTRA,DESC_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA)
+        salida = crear_servicioExtra(NOM_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA)
         if salida == 1:
             return Response({'response':'Se creo correctamente el servicio extra'}, status=status.HTTP_201_CREATED)
         else:
@@ -1061,8 +1059,7 @@ def get_servExtra(request,id):
                 res = {}
                 res['ID_SERVICIO'] = servEx[0]
                 res['NOM_SERVICIO_EXTRA'] = servEx[1]
-                res['DESC_SERVICIO_EXTRA'] = servEx[2]
-                res['VALOR_SERVICIO_EXTRA'] = servEx[3]
+                res['VALOR_SERVICIO_EXTRA'] = servEx[2]
                 servExtra.append(res)
             return Response(servExtra, status=status.HTTP_200_OK)
         elif(get_servicioExtra == []):
@@ -1078,7 +1075,6 @@ def servExtra_modify(request, id):
             return  Response({'response':'No existe un servicios extras'}, status=status.HTTP_404_NOT_FOUND)
 
         NOM_SERVICIO_EXTRA = request.data.get('NOM_SERVICIO_EXTRA')
-        DESC_SERVICIO_EXTRA = request.data.get('DESC_SERVICIO_EXTRA')
         VALOR_SERVICIO_EXTRA = request.data.get('VALOR_SERVICIO_EXTRA')
         
         salida = modificar_servicioExtra(id,NOM_SERVICIO_EXTRA,DESC_SERVICIO_EXTRA,VALOR_SERVICIO_EXTRA)
