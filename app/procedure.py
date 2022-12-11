@@ -456,3 +456,12 @@ def eliminar_servicioExtra(id):
     salida = cursor.var(cx_Oracle.NUMBER)
     cursor.callproc("SP_ELIMINAR_SERVICIOEXTRA", [id,salida])
     return salida.getvalue()
+
+
+#Mantenimiento Pago
+def crear_pago(FECHA_PAGO,MONTO_TOTAL,TIPO_PAGO_ID_TIPO_PAGO):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("SP_CREAR_PAGO", [FECHA_PAGO,MONTO_TOTAL,TIPO_PAGO_ID_TIPO_PAGO, salida])
+    return salida.getvalue()

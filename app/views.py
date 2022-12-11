@@ -1097,6 +1097,20 @@ def servExtra_delete(request, id):
     else:
         return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+#Mantenimiento Pago
+@api_view(['POST'])
+def pago_create(request):
+    if request.method == 'POST':
+        FECHA_PAGO = request.data.get('FECHA_PAGO')
+        MONTO_TOTAL = request.data.get('MONTO_TOTAL')
+        TIPO_PAGO_ID_TIPO_PAGO = request.data.get('TIPO_PAGO_ID_TIPO_PAGO')
+        
+        salida = crear_pago(FECHA_PAGO,MONTO_TOTAL,TIPO_PAGO_ID_TIPO_PAGO)
+        if salida == 1:
+            return Response({'response':'Se creo correctamente el pago'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 #TransBank

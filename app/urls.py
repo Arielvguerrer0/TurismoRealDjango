@@ -87,7 +87,10 @@ urlpatterns = [
     path('ServicioExtra/<id>', get_servExtra),
     path('ServicioExtra/modificar/<id>', servExtra_modify),
     path('ServicioExtra/eliminar/<id>', servExtra_delete),
-    
+
+    #Pago 
+    path('pago/crear/', pago_create),
+
     ##Transbank
     path('transbank/crear/', create_transaction),
     path('transbank/commit/', commit_transaction),
