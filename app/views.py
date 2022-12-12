@@ -1098,6 +1098,25 @@ def servExtra_delete(request, id):
         return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #Mantenimiento Pago
+
+@api_view(['GET', 'POST'])
+def pagoID_list(request):
+    if request.method == 'GET':
+        get_pagoID = listar_pagoID()
+        if(get_pagoID != []):
+            pagoID = []
+            res = {}
+            for pag_id in get_pagoID:
+                res = {}
+                res['ID_PAGO'] = pag_id[0]
+                pagoID.append(res)
+            return Response(pagoID, status=status.HTTP_200_OK)
+        elif(get_pagoID == []):
+            return Response({"Error": "No se encontraron servicios extras"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 @api_view(['POST'])
 def pago_create(request):
     if request.method == 'POST':
@@ -1108,6 +1127,23 @@ def pago_create(request):
         salida = crear_pago(FECHA_PAGO,MONTO_TOTAL,TIPO_PAGO_ID_TIPO_PAGO)
         if salida == 1:
             return Response({'response':'Se creo correctamente el pago'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+#Mantenimiento Orden de compra
+@api_view(['POST'])
+def OrdenCompra_create(request):
+    if request.method == 'POST':
+        FECHA_ORDEN_COMPRA = request.data.get('FECHA_ORDEN_COMPRA')
+        DEBE = request.data.get('DEBE')
+        TOTAL_COMPRA = request.data.get('TOTAL_COMPRA')
+        RESERVA_ID_RESERVA = request.data.get('RESERVA_ID_RESERVA')
+        PAGO_ID_PAGO = request.data.get('PAGO_ID_PAGO')
+        
+        salida = crear_ordenCompra(FECHA_ORDEN_COMPRA,DEBE,TOTAL_COMPRA,RESERVA_ID_RESERVA,PAGO_ID_PAGO)
+        if salida == 1:
+            return Response({'response':'Se creo correctamente la orden de compra'}, status=status.HTTP_201_CREATED)
         else:
             return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
