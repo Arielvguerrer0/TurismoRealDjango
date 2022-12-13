@@ -1147,6 +1147,47 @@ def OrdenCompra_create(request):
         else:
             return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['POST'])
+def OrdenCompra_modify(request, id):
+    if request.method == 'POST':
+        get_ordenCompra = buscar_ordenCompra(id)
+        if(get_ordenCompra == []):
+            return  Response({'response':'No existe una orden de compra'}, status=status.HTTP_404_NOT_FOUND)
+
+        FECHA_ORDEN_COMPRA = request.data.get('FECHA_ORDEN_COMPRA')
+        DEBE = request.data.get('DEBE')
+        TOTAL_COMPRA = request.data.get('TOTAL_COMPRA')
+        RESERVA_ID_RESERVA = request.data.get('RESERVA_ID_RESERVA')
+        PAGO_ID_PAGO = request.data.get('PAGO_ID_PAGO')
+        
+        salida = modificar_ordenCompra(id,FECHA_ORDEN_COMPRA,DEBE,TOTAL_COMPRA,RESERVA_ID_RESERVA,PAGO_ID_PAGO)
+        if salida == 1:
+            return Response({'response':'Se modifico correctamente el servicio extra'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET'])
+def get_OrdenCompra(request,id):
+    if request.method == 'GET':
+        get_OrdenCompra = buscar_ordenCompra(id)
+        if(get_OrdenCompra != []):
+            ordenCompra = []
+            res = {}
+            for ordenCom in get_OrdenCompra:
+                res = {}
+                res['ID_ORDEN_COMPRA'] = ordenCom[0]
+                res['FECHA_ORDEN_COMPRA'] = ordenCom[1]
+                res['DEBE'] = ordenCom[2]
+                res['TOTAL_COMPRA'] = ordenCom[3]
+                res['RESERVA_ID_RESERVA'] = ordenCom[4]
+                res['PAGO_ID_PAGO'] = ordenCom[5]
+                ordenCompra.append(res)
+            return Response(ordenCompra, status=status.HTTP_200_OK)
+        elif(get_OrdenCompra == []):
+            return Response({"Error": "No se encontraron orden de compras"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 #TransBank

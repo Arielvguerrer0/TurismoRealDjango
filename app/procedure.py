@@ -487,3 +487,21 @@ def crear_ordenCompra(FECHA_ORDEN_COMPRA,DEBE,TOTAL_COMPRA,RESERVA_ID_RESERVA,PA
     salida = cursor.var(cx_Oracle.NUMBER)
     cursor.callproc("SP_CREAR_ORDENCOMPRA", [FECHA_ORDEN_COMPRA,DEBE,TOTAL_COMPRA,RESERVA_ID_RESERVA,PAGO_ID_PAGO, salida])
     return salida.getvalue()
+
+def modificar_ordenCompra(ID,FECHA_ORDEN_COMPRA,DEBE,TOTAL_COMPRA,RESERVA_ID_RESERVA,PAGO_ID_PAGO):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("SP_MODIFICAR_ORDENCOMPRA", [ID,FECHA_ORDEN_COMPRA,DEBE,TOTAL_COMPRA,RESERVA_ID_RESERVA,PAGO_ID_PAGO, salida])
+    return salida.getvalue()
+
+def buscar_ordenCompra(id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("SP_BUSCAR_ORDENCOMPRA",[id,out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
