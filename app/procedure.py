@@ -492,6 +492,18 @@ def crear_pago(FECHA_PAGO,MONTO_TOTAL,TIPO_PAGO_ID_TIPO_PAGO):
 
 
 #Mantenimiento OrdenCompra
+
+def listar_OrdenCompra():
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()    
+    cursor.callproc("SP_LISTAR_ORDENCOMPRA",[out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
 def crear_ordenCompra(FECHA_ORDEN_COMPRA,DEBE,TOTAL_COMPRA,RESERVA_ID_RESERVA,PAGO_ID_PAGO):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()

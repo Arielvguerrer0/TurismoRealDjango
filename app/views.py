@@ -1152,6 +1152,29 @@ def pago_create(request):
 
 
 #Mantenimiento Orden de compra
+
+@api_view(['GET', 'POST'])
+def OrdenCompra_list(request):
+    if request.method == 'GET':
+        get_OrdenCompra = listar_OrdenCompra()
+        if(get_OrdenCompra != []):
+            ordenCompra = []
+            res = {}
+            for ordenCom in get_OrdenCompra:
+                res = {}
+                res['ID_ORDEN_COMPRA'] = ordenCom[0]
+                res['FECHA_ORDEN_COMPRA'] = ordenCom[1]
+                res['DEBE'] = ordenCom[2]
+                res['TOTAL_COMPRA'] = ordenCom[3]
+                res['RESERVA_ID_RESERVA'] = ordenCom[4]
+                res['PAGO_ID_PAGO'] = ordenCom[5]
+                ordenCompra.append(res)
+            return Response(ordenCompra, status=status.HTTP_200_OK)
+        elif(get_OrdenCompra == []):
+            return Response({"Error": "No se encontraron ordenes de compras"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 @api_view(['POST'])
 def OrdenCompra_create(request):
     if request.method == 'POST':

@@ -94,6 +94,7 @@ urlpatterns = [
     path('pago/crear/', pago_create),
 
     #Orden de compra
+    path('listarOrdenCompra/', OrdenCompra_list),
     path('OrdenCompra/crear/', OrdenCompra_create),
     path('OrdenCompra/modificar/<id>', OrdenCompra_modify),
     path('OrdenCompra/<id>', get_OrdenCompra),
