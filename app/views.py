@@ -411,6 +411,23 @@ def reserva_list(request):
         else:
             return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['GET', 'POST'])
+def ReservaID_list(request):
+    if request.method == 'GET':
+        get_reservaID = listar_reservaID()
+        if(get_reservaID != []):
+            reservaID = []
+            res = {}
+            for reserva_id in get_reservaID:
+                res = {}
+                res['ID_RESERVA'] = reserva_id[0]
+                reservaID.append(res)
+            return Response(reservaID, status=status.HTTP_200_OK)
+        elif(get_reservaID == []):
+            return Response({"Error": "No se encontro la reserva"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 @api_view(['GET', 'POST'])            
 def reserva_bruto(request):
     if request.method == 'GET':
@@ -1121,8 +1138,11 @@ def pagoID_list(request):
 def pago_create(request):
     if request.method == 'POST':
         FECHA_PAGO = request.data.get('FECHA_PAGO')
+        print(FECHA_PAGO)
         MONTO_TOTAL = request.data.get('MONTO_TOTAL')
+        print(MONTO_TOTAL)
         TIPO_PAGO_ID_TIPO_PAGO = request.data.get('TIPO_PAGO_ID_TIPO_PAGO')
+        print(TIPO_PAGO_ID_TIPO_PAGO)
         
         salida = crear_pago(FECHA_PAGO,MONTO_TOTAL,TIPO_PAGO_ID_TIPO_PAGO)
         if salida == 1:
