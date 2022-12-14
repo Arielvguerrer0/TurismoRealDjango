@@ -1232,6 +1232,30 @@ def get_OrdenCompra(request,id):
         else:
             return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['GET'])
+def get_OrdenCompraReserva(request,id):
+    if request.method == 'GET':
+        get_OrdenCompra = buscar_ordenReserva(id)
+        if(get_OrdenCompra != []):
+            ordenCompra = []
+            res = {}
+            for ordenCom in get_OrdenCompra:
+                res = {}
+                res['ID_ORDEN_COMPRA'] = ordenCom[0]
+                res['FECHA_INGRESO'] = ordenCom[1]
+                res['FECHA_SALIDA'] = ordenCom[2]
+                res['CANT_DIA_RESERVA'] = ordenCom[3]
+                res['ESTADO_RESERVA'] = ordenCom[4]
+                res['DEBE'] = ordenCom[5]
+                res['TOTAL_COMPRA'] = ordenCom[6]
+                res['RESERVA_ID_RESERVA'] = ordenCom[7]
+                ordenCompra.append(res)
+            return Response(ordenCompra, status=status.HTTP_200_OK)
+        elif(get_OrdenCompra == []):
+            return Response({"Error": "No se encontraron orden de compras"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 #TransBank
 @api_view(['POST'])

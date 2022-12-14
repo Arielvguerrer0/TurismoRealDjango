@@ -528,3 +528,14 @@ def buscar_ordenCompra(id):
     for fila in out_cur:
         lista.append(fila)
     return lista
+
+def buscar_ordenReserva(id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("SP_LISTAR_ORDENRESERVA",[id,out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
