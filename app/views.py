@@ -10,6 +10,7 @@ from django.views import View
 from rest_framework.decorators import api_view
 from .procedure import *
 from .tranbank import *
+from django.core.mail import send_mail
 
 
 
@@ -454,6 +455,7 @@ def reserva_bruto(request):
 
 @api_view(['POST'])
 def reserva_create(request):
+    print('REQUEST', request.data.get('CORREO_USUARIO'))
     if request.method == 'POST':
         FECHA_INGRESO = request.data.get('FECHA_INGRESO')
         FECHA_SALIDA = request.data.get('FECHA_SALIDA')
@@ -462,8 +464,11 @@ def reserva_create(request):
         FECHA_ESTADO_RESERVA = request.data.get('FECHA_ESTADO_RESERVA')
         DEPARTAMENTO_ID_DEPARTAMENTO = request.data.get('DEPARTAMENTO_ID_DEPARTAMENTO')
         USUARIO_ID_USUARIO = request.data.get('USUARIO_ID_USUARIO')
+        CORREO_USUARIO = request.data.get('CORREO_USUARIO')
         
         salida = crear_reserva(FECHA_INGRESO,FECHA_SALIDA,CANT_DIA_RESERVA,ESTADO_RESERVA,FECHA_ESTADO_RESERVA,DEPARTAMENTO_ID_DEPARTAMENTO,USUARIO_ID_USUARIO)
+        resp = envio_correo('Reserva Exitosa', 'se creo la tremenda reserva', CORREO_USUARIO);
+
         if salida == 1:
             return Response({'response':'Se creo correctamente la reserva'}, status=status.HTTP_201_CREATED)
         else:
@@ -1138,11 +1143,11 @@ def pagoID_list(request):
 def pago_create(request):
     if request.method == 'POST':
         FECHA_PAGO = request.data.get('FECHA_PAGO')
-        print(FECHA_PAGO)
         MONTO_TOTAL = request.data.get('MONTO_TOTAL')
-        print(MONTO_TOTAL)
         TIPO_PAGO_ID_TIPO_PAGO = request.data.get('TIPO_PAGO_ID_TIPO_PAGO')
-        print(TIPO_PAGO_ID_TIPO_PAGO)
+        CORREO_USUARIO = request.data.get('CORREO_USUARIO')
+        
+        resp = envio_correo('Se genero un pago', 'su pago fue recepcionado con exito', CORREO_USUARIO)
         
         salida = crear_pago(FECHA_PAGO,MONTO_TOTAL,TIPO_PAGO_ID_TIPO_PAGO)
         if salida == 1:
@@ -1282,6 +1287,18 @@ def commit_transaction(request):
         return Response( resp, status=status.HTTP_200_OK)
     else:
         return Response({'response':'Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+def envio_correo(subject, message, mailto ):
+    resp =  send_mail(
+        subject,
+        message,
+        'turismorealscrumbot@gmail.com',
+        [mailto],
+        fail_silently=False,
+    );
+
+    return resp;
 
 
 
